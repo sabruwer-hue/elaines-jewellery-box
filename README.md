@@ -24,3 +24,15 @@ A mobile-friendly owner gateway preview is available at `admin.html`, linked fro
 This first front-end release does not yet include a secure backend, customer accounts, persistent products/orders, secure photo uploads, quotations, invoices, PayGate, live admin backend, review moderation, or server-side referral attribution/rewards. Referral URLs currently create a shareable browser code only; referrals are not yet tracked. Confirm the contact email and business details. Product cards are examples only.
 
 Never commit payment credentials or private API keys. Production payments and customer data require server-side services, access controls, backups and POPIA review.
+
+## Automated email setup (prepared)
+A staff-authenticated Supabase Edge Function named `send-business-email` has been deployed to the Elaine's Jewellery Box Supabase project. It uses Resend for transactional email and checks the signed-in user's active staff record before sending. It does not expose the service-role key or payment settings to the browser.
+
+Before email can actually be sent, configure these Edge Function secrets in Supabase → Edge Functions → Secrets:
+- `RESEND_API_KEY`: the API key from a Resend account.
+- `ELB_FROM_EMAIL`: the verified sender, for example `Elaine's Jewellery Box <orders@your-verified-domain>`.
+- `ELB_ALLOWED_ORIGIN`: optional, set to the exact published shop origin to restrict browser calls.
+
+In Resend, add and verify a domain owned for Elaine's Jewellery Box, publish the DNS records Resend supplies (SPF/DKIM, and DMARC recommended), and create a sender address such as `orders@...`. The sender does not have to be the same as the public contact/reply-to address. A mailbox/alias must exist if Elaine needs to receive replies. Never use Tiny Monsters Club's sender unless that is deliberately chosen and authorized.
+
+The deployed function is an email-sending building block only. The storefront and admin screens are not yet wired to it, and no automated order/quote/review emails are active. Do not treat email automation as live until the secrets are configured and the complete order → quote → acceptance → payment workflow has been connected and tested.
