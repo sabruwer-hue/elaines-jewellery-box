@@ -39,6 +39,50 @@ Each notification opens the relevant record. Include read/unread state, timestam
 9. **Reports & Insights** — sales and revenue over time, order conversion, average order value, best-selling categories, repeat customers, enquiry-to-quote conversion, quote acceptance, project profitability estimates, outstanding invoices, complaint themes, review trends, referral performance, and stock movement. Show date filters and explain how each metric is calculated. Distinguish actual data from estimates.
 10. **Settings** — owner profile, business details, notification preferences, shipping/collection settings, tax/invoice details, payment methods, policies, security, data export, and backup status.
 
+## Mandatory written roadmap and action plan
+
+**Every quote, invoice, and AI-suggested design must include an accompanying written roadmap plan.** This is a required part of the document/output template, not an optional extra.
+
+### Quotes — quote plus delivery roadmap
+Every quotation must include:
+- Customer request and agreed project scope.
+- Proposed outcome/design and itemised materials, labour and costs.
+- A step-by-step execution plan, with stages, dependencies and estimated durations.
+- Milestones and customer approval checkpoints, including any design/material choices Elaine needs confirmed.
+- Estimated start and completion window, clearly labelled as estimates until scheduled.
+- Deposit, milestone payments and balance/payment terms.
+- Assumptions, exclusions, risks and any factors that could change the price or timeline.
+- What happens next: accept, decline or request changes; no work begins before Elaine approves the quote and the customer accepts it.
+
+### Invoices — invoice plus fulfilment/payment roadmap
+Every invoice must remain a proper financial document and must be accompanied by a clearly separated roadmap section or linked project/order plan. Include:
+- The linked order or accepted quote reference and the agreed scope.
+- Current fulfilment/project stage and the next planned steps.
+- Milestones, target dates or estimated time windows, and any customer actions or approvals required.
+- Itemised charges, deposit paid, payments received, outstanding balance, due date and payment instructions.
+- What happens after payment and how completion, collection or delivery will be confirmed.
+- Any schedule changes must be recorded and communicated; an invoice must never imply that payment alone confirms work completion.
+
+### AI-suggested designs — concept plus implementation roadmap
+Every design Geranemo suggests or helps create must include:
+- Design name, purpose and description of the proposed finished result.
+- Reference image or concept visual where available, with clear labelling that AI imagery is illustrative and not a guaranteed exact result.
+- Suggested materials, finishes, colours, dimensions and techniques, identifying unknowns that need measurement or inspection.
+- Step-by-step making/restoration plan, tools or specialist skills potentially required, and dependencies.
+- Preliminary cost and time ranges only when there is a reasonable basis; label them as estimates, not customer quotations.
+- Practicality, durability, safety and care considerations where relevant.
+- Decision points where Elaine must approve the concept, materials, budget and final scope before a customer quote is issued or work begins.
+- Alternative approaches where useful, plus the recommended next action.
+
+### Roadmap quality and presentation
+- Use plain language, numbered stages, clear responsibilities (Elaine, customer, supplier or contractor), and realistic dependencies.
+- Distinguish confirmed facts, owner-approved commitments, AI suggestions and estimates.
+- Include a version/date and link the roadmap to its quote, invoice, order, enquiry or design record.
+- Keep an editable internal plan and a customer-facing version that excludes private notes, internal margins and sensitive business information.
+- Generate a printable/downloadable PDF when the document system is implemented.
+- Geranemo may draft roadmaps, but Elaine must approve customer-facing plans, prices, dates and commitments before sending.
+- If information is missing, show the unknowns and questions rather than inventing measurements, costs, dates or promises.
+
 ## Geranemo — Elaine's AI business assistant
 Geranemo is an advisory assistant inside the admin gateway. It can:
 - Summarise the day's priorities, orders, customer messages, and overdue tasks.
