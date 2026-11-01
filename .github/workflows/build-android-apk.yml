@@ -27,6 +27,8 @@ jobs:
           cp icons/icon.svg www/icons/
       - name: Generate Android project
         run: npx cap add android
+      - name: Sync Capacitor assets
+        run: npx cap sync android
       - name: Build Android debug APK
         working-directory: android
         run: |
