@@ -17,6 +17,9 @@ This is a debug APK for testing, not a signed production release. Android may wa
 ## Hosting
 Enable GitHub Pages in repository Settings → Pages → Deploy from branch → main / root. The Capacitor wrapper loads the GitHub Pages site at https://sabruwer-hue.github.io/elaines-jewellery-box/. Confirm the published Pages URL before distributing the APK.
 
+## Private admin gateway
+The agreed owner-only admin and Geranemo scope is documented in [ADMIN-GATEWAY.md](ADMIN-GATEWAY.md). This is a product specification, not a live secure admin system. A real backend, authentication provider, private database/storage and server-side AI integration must be configured before customer data or the bootstrap setup flow can be used.
+
 ## Prototype limitations before launch
 This first front-end release does not yet include a secure backend, customer accounts, persistent products/orders, secure photo uploads, quotations, invoices, PayGate, admin dashboard, review moderation, or server-side referral attribution/rewards. Referral URLs currently create a shareable browser code only; referrals are not yet tracked. Confirm the contact email and business details. Product cards are examples only.
 
