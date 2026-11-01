@@ -1,2 +1,23 @@
-# elaines-jewellery-box
-Elaine's hand crafts including jewellery and other hand made and refurbished products.
+# Elaine's Jewellery Box
+
+Responsive jewellery-first storefront and installable Progressive Web App, with an automated Android debug APK build and release download.
+
+## Included
+- Responsive warm handmade storefront.
+- Second Life Studio introduction and enquiry email-draft flow.
+- PWA manifest, service worker and install prompt.
+- Native share sheet and browser-generated referral URL.
+- GitHub Actions workflow that builds and publishes an Android debug APK release.
+
+## APK download
+After a successful Android build, the APK is published as a prerelease asset. The in-app Android APK button points to the latest published release asset. The first build is triggered by a qualifying push to main or manually from the Actions tab.
+
+This is a debug APK for testing, not a signed production release. Android may warn users that it was downloaded outside the Play Store.
+
+## Hosting
+Enable GitHub Pages in repository Settings → Pages → Deploy from branch → main / root. The Capacitor wrapper loads the GitHub Pages site at https://sabruwer-hue.github.io/elaines-jewellery-box/. Confirm the published Pages URL before distributing the APK.
+
+## Prototype limitations before launch
+This first front-end release does not yet include a secure backend, customer accounts, persistent products/orders, secure photo uploads, quotations, invoices, PayGate, admin dashboard, review moderation, or server-side referral attribution/rewards. Referral URLs currently create a shareable browser code only; referrals are not yet tracked. Confirm the contact email and business details. Product cards are examples only.
+
+Never commit payment credentials or private API keys. Production payments and customer data require server-side services, access controls, backups and POPIA review.
