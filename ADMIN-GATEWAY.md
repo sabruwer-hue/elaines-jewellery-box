@@ -74,7 +74,34 @@ Every design Geranemo suggests or helps create must include:
 - Decision points where Elaine must approve the concept, materials, budget and final scope before a customer quote is issued or work begins.
 - Alternative approaches where useful, plus the recommended next action.
 
-### Roadmap quality and presentation
+### Printable, evidence-ready documentation — mandatory across the platform
+
+**All documentation created, received, updated or stored in the admin gateway must be printable.** This applies to quotes, invoices, roadmaps, orders, customer messages, complaints, suggestions, design concepts, project records, payment records, review decisions, completed-project records, policies, reports, and relevant AI-assisted outputs.
+
+### Print and export requirements
+- Every record must have a clean, professional print view that works on ordinary A4 paper and is readable in black-and-white as well as colour.
+- Provide a consistent **Print** action and a PDF export/download wherever a document or record can be viewed.
+- Use page numbers, document title, business identity/contact details, document/reference number, creation date, current version, and page count where appropriate.
+- Keep tables, totals, signatures and important notes together where practical; avoid clipped text, broken images and blank pages.
+- Include attached photographs and relevant supporting documents in a clearly labelled appendix or attachment list. Preserve original files separately.
+- Provide a full-record print/export option for a customer case, order, quote, invoice or project, including its relevant roadmap, correspondence, approvals and supporting evidence.
+- Allow Elaine to print an internal copy and a customer-facing copy. Internal copies may include private notes; customer copies must exclude internal-only notes, margins, credentials and unrelated personal information.
+- For large photo collections, offer a contact sheet plus a numbered attachment index, while retaining the original full-resolution files.
+
+### Evidence and record integrity
+- Preserve the original record and its history. Corrections should create a new version or an amendment; do not silently overwrite an issued quote, invoice, approval or customer communication.
+- Record who created, changed, approved, sent or acknowledged a document, with timestamps and a clear audit history.
+- Where applicable, capture customer acceptance, approval wording, payment verification, delivery/collection confirmation and consent to publish photographs.
+- Mark drafts, estimates, copies and amended/reissued documents clearly. Never make an unapproved draft look like an issued document.
+- Give each document and case a unique reference number and maintain links between related records and attachments.
+- Keep original uploads and relevant metadata where practical; do not alter evidence images. If an image is resized for printing, retain the original file.
+- Provide a chronological case bundle that can be printed or exported, with an index of included records and attachments.
+- Apply access controls, secure backups, retention rules and export logs to protect customer information.
+
+### Important limitation
+Printable records and audit trails can help Elaine organise supporting material for a complaint, insurance matter or legal claim, but the platform must not claim that a printout is automatically legally admissible or sufficient evidence. Evidentiary value depends on the facts, authenticity, completeness and applicable law. Preserve originals and seek professional legal advice when a formal claim requires it.
+
+## Roadmap quality and presentation
 - Use plain language, numbered stages, clear responsibilities (Elaine, customer, supplier or contractor), and realistic dependencies.
 - Distinguish confirmed facts, owner-approved commitments, AI suggestions and estimates.
 - Include a version/date and link the roadmap to its quote, invoice, order, enquiry or design record.
