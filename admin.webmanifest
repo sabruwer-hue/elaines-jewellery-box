@@ -1,0 +1,21 @@
+{
+  "id": "/admin.html",
+  "name": "EBJ Admin — Elaine Bruwer Jewellery",
+  "short_name": "EBJ Admin",
+  "description": "Private owner and business management workspace for Elaine Bruwer Jewellery.",
+  "lang": "en-ZA",
+  "start_url": "/admin.html?source=admin-pwa",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#090909",
+  "theme_color": "#090909",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/admin-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
