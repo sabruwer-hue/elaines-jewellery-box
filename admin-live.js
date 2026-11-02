@@ -74,3 +74,42 @@ $("markNotificationsRead")?.addEventListener("click",async()=>{
 });
 const originalVerifyStaff=verifyStaff;
 verifyStaff=async function(){const ok=await originalVerifyStaff();if(ok)startAdminNotificationFeed();return ok;};
+
+const EBJ_EVENT_KEYS=["new_order","payment_update","studio_enquiry","customer_case","review","low_stock"];
+async function loadNotificationPreferences(){
+ const form=$("notificationPreferencesForm");if(!form)return;
+ const {data:{user}}=await adminSupabase.auth.getUser();if(!user)return;
+ const {data,error}=await adminSupabase.from("admin_notification_preferences").select("*").eq("user_id",user.id).maybeSingle();
+ if(error){showMessage("notificationPreferencesStatus","Could not load preferences: "+error.message);return;}
+ const enabled=data?.enabled_events||EBJ_EVENT_KEYS;
+ EBJ_EVENT_KEYS.forEach(key=>{const input=form.elements.namedItem(key);if(input)input.checked=enabled.includes(key);});
+ const digest=form.elements.namedItem("daily_briefing_enabled");if(digest)digest.checked=data?.daily_briefing_enabled??true;
+ const time=form.elements.namedItem("briefing_time");if(time)time.value=(data?.briefing_time||"08:00").slice(0,5);
+}
+$("notificationPreferencesForm")?.addEventListener("submit",async event=>{
+ event.preventDefault();const form=event.currentTarget,button=form.querySelector('button[type="submit"]');button.disabled=true;showMessage("notificationPreferencesStatus","Saving preferences…");
+ const {data:{user}}=await adminSupabase.auth.getUser();if(!user){showMessage("notificationPreferencesStatus","Please sign in again.");button.disabled=false;return;}
+ const enabled_events=EBJ_EVENT_KEYS.filter(key=>form.elements.namedItem(key)?.checked);
+ const daily=form.elements.namedItem("daily_briefing_enabled")?.checked??true;
+ const briefing_time=form.elements.namedItem("briefing_time")?.value||"08:00";
+ const {error}=await adminSupabase.from("admin_notification_preferences").upsert({user_id:user.id,enabled_events,daily_briefing_enabled:daily,briefing_time:briefing_time+":00",updated_at:new Date().toISOString()},{onConflict:"user_id"});
+ showMessage("notificationPreferencesStatus",error?"Could not save: "+error.message:"Notification preferences saved.");button.disabled=false;
+});
+async function loadDailyBriefing(){
+ const box=$("dailyBriefing");if(!box)return;
+ box.innerHTML="";box.append(node("p","Gathering today's business activity…","muted"));
+ const since=new Date(Date.now()-24*60*60*1000).toISOString();
+ const [orders,enquiries,cases,reviews,stock]=await Promise.all([
+  adminSupabase.from("orders").select("id",{count:"exact",head:true}).gte("created_at",since),
+  adminSupabase.from("studio_enquiries").select("id",{count:"exact",head:true}).gte("created_at",since),
+  adminSupabase.from("customer_cases").select("id",{count:"exact",head:true}).neq("status","resolved"),
+  adminSupabase.from("customer_reviews").select("id",{count:"exact",head:true}).eq("status","pending"),
+  adminSupabase.from("product_variants").select("id",{count:"exact",head:true}).lte("stock_on_hand",3).eq("is_active",true)
+ ]);
+ const rows=[["New orders (24h)",orders.count??"—"],["New studio enquiries (24h)",enquiries.count??"—"],["Open customer-care cases",cases.count??"—"],["Reviews awaiting approval",reviews.count??"—"],["Low-stock variants",stock.count??"—"]];
+ rows.forEach(([label,value])=>{const row=node("div",undefined,"brief-row");row.append(node("span",label),node("strong",String(value)));box.append(row);});
+ const total=(orders.count||0)+(enquiries.count||0)+(cases.count||0)+(reviews.count||0)+(stock.count||0);
+ box.append(node("p",total?"Review outstanding customer cases, pending reviews and low-stock items first.":"No outstanding items were found in the tracked queues.","muted"));
+ box.append(node("small","Updated "+new Date().toLocaleString("en-ZA")));
+}
+$("refreshDailyBriefing")?.addEventListener("click",loadDailyBriefing);
