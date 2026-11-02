@@ -122,3 +122,40 @@ async function loadDailyBriefing(){
  box.append(node("small","Updated "+new Date().toLocaleString("en-ZA")));
 }
 $("refreshDailyBriefing")?.addEventListener("click",loadDailyBriefing);
+
+
+/* Geranemo secure OpenAI assistant — read, advise and prepare only. */
+let geranemoConversationId=null;
+let geranemoSending=false;
+function addGeranemoMessage(role,content){
+ const chat=$("geranemoChat");if(!chat)return;
+ const welcome=chat.querySelector(".geranemo-welcome");if(welcome)welcome.remove();
+ const bubble=node("article",undefined,"geranemo-message "+role);
+ const who=node("strong",role==="user"?"Elaine":"Geranemo");
+ const body=node("div",content,"geranemo-message-body");
+ bubble.append(who,body);chat.append(bubble);chat.scrollTop=chat.scrollHeight;
+}
+async function sendGeranemoMessage(raw){
+ const message=String(raw||"").trim();if(!message||geranemoSending)return;
+ const input=$("geranemoInput"),button=$("geranemoSend"),status=$("geranemoMessage");
+ geranemoSending=true;if(button)button.disabled=true;if(input)input.disabled=true;
+ if(status)status.textContent="Geranemo is checking the available business records…";
+ addGeranemoMessage("user",message);
+ try{
+  const {data:{session},error:sessionError}=await adminSupabase.auth.getSession();
+  if(sessionError||!session)throw new Error("Your session has expired. Please sign in again.");
+  const response=await fetch("https://jakcqdeyvbbgdwctomdu.supabase.co/functions/v1/geranemo-assistant",{
+   method:"POST",headers:{"Content-Type":"application/json","apikey":"sb_publishable_-fWvxeQlGA1ocIVgxWguaA_5MUUo67-","Authorization":"Bearer "+session.access_token},
+   body:JSON.stringify({message,conversation_id:geranemoConversationId})
+  });
+  const result=await response.json().catch(()=>({}));
+  if(!response.ok)throw new Error(result.error||"Geranemo could not complete the request.");
+  geranemoConversationId=result.conversation_id||geranemoConversationId;
+  addGeranemoMessage("assistant",result.answer||"I couldn't produce a response.");
+  if(status)status.textContent="Conversation saved securely · Read, advise and prepare mode.";
+  if(input)input.value="";
+ }catch(error){addGeranemoMessage("assistant","I couldn't complete that request: "+(error.message||"Unknown error"));if(status)status.textContent="Please check the connection and try again.";}
+ finally{geranemoSending=false;if(button)button.disabled=false;if(input){input.disabled=false;input.focus();}}
+}
+$("geranemoForm")?.addEventListener("submit",event=>{event.preventDefault();sendGeranemoMessage($("geranemoInput")?.value);});
+document.querySelectorAll("[data-geranemo-prompt]").forEach(button=>button.addEventListener("click",()=>sendGeranemoMessage(button.dataset.geranemoPrompt)));
