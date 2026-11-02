@@ -38,7 +38,7 @@ function startAdminNotificationFeed(){
  if(adminNotificationChannel)return;
  loadAdminNotifications();
  adminNotificationChannel=adminSupabase.channel("ebj-admin-notifications")
-  .on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_notifications"},payload=>{
+  .on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_notifications"},async payload=>{
    loadAdminNotifications();
    const item=payload.new||{};
    if("Notification"in window&&Notification.permission==="granted"&&document.hidden){
@@ -51,10 +51,22 @@ $("notificationButton")?.addEventListener("click",async()=>{
  panel.hidden=!panel.hidden;$("notificationButton").setAttribute("aria-expanded",String(!panel.hidden));
  if(!panel.hidden)await loadAdminNotifications();
 });
+const EBJ_VAPID_PUBLIC_KEY="BLCw0vzAZ04nQCzcivLEB323Y6ompPSPrjGvBmw7URoJTCFvcORUKErqrQ45JGYnO-kKf1ve7z2cLAgnDeioM1s";
+function vapidKeyBytes(value){const pad="=".repeat((4-value.length%4)%4);const raw=atob((value+pad).replace(/-/g,"+").replace(/_/g,"/"));return Uint8Array.from(raw,c=>c.charCodeAt(0));}
 $("enableBrowserAlerts")?.addEventListener("click",async()=>{
- if(!("Notification"in window)){alert("This browser does not support notifications.");return;}
- const permission=await Notification.requestPermission();
- $("enableBrowserAlerts").textContent=permission==="granted"?"Browser alerts enabled":"Alerts not enabled";
+ const button=$("enableBrowserAlerts");button.disabled=true;button.textContent="Connecting…";
+ try{
+  if(!("Notification"in window)||!("serviceWorker"in navigator)||!("PushManager"in window))throw new Error("Push notifications are not supported by this browser. Try installing EBJ Admin in Chrome.");
+  const permission=await Notification.requestPermission();
+  if(permission!=="granted")throw new Error("Notification permission was not granted. Enable notifications for this site in your browser settings.");
+  const {data:{user},error:userError}=await adminSupabase.auth.getUser();if(userError||!user)throw new Error("Please sign in again before enabling alerts.");
+  const registration=await navigator.serviceWorker.ready;
+  let subscription=await registration.pushManager.getSubscription();
+  if(!subscription)subscription=await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:vapidKeyBytes(EBJ_VAPID_PUBLIC_KEY)});
+  const {error}=await adminSupabase.from("admin_push_subscriptions").upsert({user_id:user.id,endpoint:subscription.endpoint,subscription:subscription.toJSON(),user_agent:navigator.userAgent},{onConflict:"endpoint"});
+  if(error)throw error;
+  button.textContent="Push alerts enabled";button.disabled=false;
+ }catch(error){button.textContent="Enable push alerts";button.disabled=false;alert(error.message||"Could not enable push notifications.");}
 });
 $("markNotificationsRead")?.addEventListener("click",async()=>{
  await adminSupabase.from("admin_notifications").update({read_at:new Date().toISOString()}).is("read_at",null);
