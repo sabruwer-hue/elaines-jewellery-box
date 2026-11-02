@@ -22,3 +22,20 @@ const announcements=document.getElementById("announcementList");if(announcements
 const reviews=document.getElementById("reviewList");if(reviews){reviews.innerHTML="";if(!data.reviews?.length)reviews.innerHTML="<p class=empty-public>No published customer reviews yet. Be the first to share your experience.</p>";else data.reviews.forEach(item=>{const card=document.createElement("article");card.className="public-card";const stars=document.createElement("div");stars.className="review-stars";stars.textContent="★".repeat(item.rating)+"☆".repeat(5-item.rating);const title=document.createElement("h3");title.textContent=item.title||"Customer review";const body=document.createElement("p");body.textContent=item.review_text;const by=document.createElement("small");by.textContent="By "+item.display_name;card.append(stars,title,body,by);reviews.append(card);});}
 const grid=document.querySelector(".product-grid");if(grid&&data.products?.length){grid.innerHTML="";data.products.forEach(product=>{const article=document.createElement("article");article.className="product-card";const image=document.createElement("div");image.className="product-image product-one";const mark=document.createElement("span");mark.className="product-symbol";mark.textContent="✧";image.append(mark);const info=document.createElement("div");info.className="product-info";const copy=document.createElement("div");const title=document.createElement("h3");title.textContent=product.name;const description=document.createElement("p");description.textContent=product.description||"Handmade with care";copy.append(title,description);const active=(product.product_variants||[]).find(v=>v.is_active!==false);const price=document.createElement("span");price.className="price";price.textContent=active?"R"+(Number(active.price_minor)/100).toFixed(2):"Ask us";info.append(copy,price);article.append(image,info);grid.append(article);});const note=document.querySelector("#jewellery .demo-note");if(note)note.textContent="Prices and availability are shown as supplied by Elaine. Contact us to confirm an order.";}}catch(error){const a=document.getElementById("announcementList");if(a)a.innerHTML="<p class=empty-public>Updates will appear here once the service is available.</p>";const r=document.getElementById("reviewList");if(r)r.innerHTML="<p class=empty-public>Customer reviews are temporarily unavailable.</p>";}}
 loadPublicContent();
+const newArrivalForm=document.getElementById("newArrivalForm");
+newArrivalForm?.addEventListener("submit",async event=>{
+ event.preventDefault();const form=event.currentTarget,button=form.querySelector('button[type="submit"]'),status=document.getElementById("newArrivalStatus");
+ const values=Object.fromEntries(new FormData(form).entries());if(values.consent!=="on"){status.textContent="Please confirm that you want to receive new-arrival emails.";return;}
+ button.disabled=true;status.textContent="Adding you to the new-arrivals list…";
+ try{const result=await intake({type:"subscribe_new_arrivals",email:values.email,name:values.name||"",consent:true,website:values.website||""});form.reset();status.textContent=result.message||"You're on the list. Watch your inbox for new arrivals.";}
+ catch(error){status.textContent=error.message||"We couldn't save your subscription. Please try again.";}
+ finally{button.disabled=false;}
+});
+async function processNewArrivalUnsubscribe(){
+ const params=new URLSearchParams(location.search),token=params.get("unsubscribe");if(!token)return;
+ const status=document.createElement("p");status.className="unsubscribe-status";status.textContent="Updating your email preferences…";document.querySelector("main")?.prepend(status);
+ try{const result=await intake({type:"unsubscribe_new_arrivals",token});status.textContent=result.message||"Your email preferences have been updated.";}
+ catch(error){status.textContent=error.message||"We couldn't update your preferences.";}
+ params.delete("unsubscribe");const clean=location.pathname+(params.toString()?"?"+params.toString():"")+location.hash;history.replaceState({}, "",clean);
+}
+processNewArrivalUnsubscribe();
