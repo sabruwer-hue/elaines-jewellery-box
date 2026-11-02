@@ -17,3 +17,31 @@
 #productForm,#announcementForm{margin:20px 0 35px;padding:18px;background:#f7f3eb;border:1px solid var(--line)}
 #productForm input[type=checkbox],#announcementForm input[type=checkbox]{width:auto}
 @media(max-width:520px){.login-panel{margin:25px 14px;padding:22px}}
+
+/* EBJ Admin reverse identity: black lettering and controls on a warm gold canvas. */
+:root{--ink:#090909;--olive:#c9a44c;--olive2:#090909;--cream:#f7f0dc;--paper:#fffaf0;--sand:#e7cf91;--clay:#8a681d;--muted:#66552f;--line:#d7bd72}
+body{background:#e5c66f;color:#090909}
+.topbar{background:#d8b85f;border-bottom:2px solid #090909}
+.brand{color:#090909}.brand em{color:#090909}
+.mark,.avatar{background:#090909;color:#e5c66f;border-color:#090909}
+.avatar{background:#090909;color:#e5c66f}
+.sidebar{background:#d8b85f;color:#090909;border-right:2px solid #090909}
+.owner{border-bottom-color:#09090955}.owner small{color:#33280d}
+nav button{color:#090909;font-weight:600}
+nav button.active,nav button:hover{background:#090909;color:#e5c66f;border-left:3px solid #fff0b4}
+.back{color:#090909;font-weight:600}
+.preview,.tag{color:#090909;background:#f3df9d;border:1px solid #090909}
+.outline,.primary{border-color:#090909;background:#090909;color:#e5c66f}
+.outline{background:transparent;color:#090909}
+.security{background:#f3df9d;color:#090909;border-bottom:1px solid #090909}
+.eyebrow{color:#74530c}
+.stats article,.panel{background:#fffaf0;border-color:#c9a44c}
+.note{background:#f3e6bf;border-left-color:#090909;color:#33280d}
+.steps span{background:#f3e6bf;color:#090909}
+.text-button{color:#090909}
+#notificationPanel{position:absolute;z-index:30;right:18px;top:66px;width:min(390px,calc(100vw - 30px));max-height:65vh;overflow:auto;background:#fffaf0;border:2px solid #090909;box-shadow:0 12px 35px #0003;padding:15px;color:#090909}
+.notification-item{padding:12px 4px;border-bottom:1px solid #dfc77f;font-size:12px}
+.notification-item strong,.notification-item small{display:block}
+.notification-item small{color:#66552f;margin-top:5px}
+#notificationCount{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;border-radius:20px;background:#c9a44c;color:#090909;font-weight:bold;margin-left:5px}
+@media(max-width:520px){#notificationPanel{top:64px;right:8px}}
