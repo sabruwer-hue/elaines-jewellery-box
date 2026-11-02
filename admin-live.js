@@ -73,7 +73,7 @@ $("markNotificationsRead")?.addEventListener("click",async()=>{
  await loadAdminNotifications();
 });
 const originalVerifyStaff=verifyStaff;
-verifyStaff=async function(){const ok=await originalVerifyStaff();if(ok)startAdminNotificationFeed();return ok;};
+verifyStaff=async function(){const ok=await originalVerifyStaff();if(ok){startAdminNotificationFeed();await loadNotificationPreferences();await loadDailyBriefing();}return ok;};
 
 const EBJ_EVENT_KEYS=["new_order","payment_update","studio_enquiry","customer_case","review","low_stock"];
 async function loadNotificationPreferences(){
