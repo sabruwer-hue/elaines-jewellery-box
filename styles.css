@@ -13,7 +13,7 @@
 .review-stars{font-size:22px;letter-spacing:4px;color:#b58a50;margin-bottom:10px}
 @media(max-width:700px){.public-form{padding:20px}}
 
-/* EBJ black-and-gold identity */
+/* Elaine’s Jewellery Box — black-and-gold identity */
 .site-header{background:#090909;border-bottom:1px solid #9e7b32}.brand,.brand strong,nav a{color:#f5ecd8}.brand em{color:#d4b35e}nav a:hover,.text-link:hover{color:#d4b35e}.announcement{background:#090909;color:#d9bd75}.hero{background:#f7f3ea}.hero h1 i,h2 i{color:#a98232}.button-dark{background:#090909;border-color:#090909}.app-icon{background:#090909;color:#d4b35e;border:1px solid #c9a44c}
 
 .new-arrivals-section{background:#e8d18b;padding:64px 24px;color:#111}
@@ -28,3 +28,13 @@
 .new-arrivals-form button,.new-arrivals-form .form-note{grid-column:1/-1}
 .new-arrivals-form .form-note{font:11px/1.5 Arial,sans-serif;color:#51431f}
 @media(max-width:600px){.new-arrivals-form{grid-template-columns:1fr}.new-arrivals-form .arrival-consent,.new-arrivals-form button,.new-arrivals-form .form-note{grid-column:auto}}
+
+/* Consistent luxury black-and-gold accents */
+:root{--olive:#090909;--olive2:#d4b35e;--clay:#a98232;--line:#d8c79e}
+.nav-cta{border-color:#c9a44c;color:#e7cc83}
+.eyebrow{color:#9b7629}
+.second-life,.contact-section{background:#090909}
+.share-section{background:#17130a}
+.new-arrivals-section{background:#d4b35e;color:#090909}
+.new-arrivals-form input:not([type=checkbox]){border-color:#9b7629}
+.public-card{border-color:#d8c79e}
