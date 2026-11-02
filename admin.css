@@ -55,3 +55,22 @@ nav button.active,nav button:hover{background:#090909;color:#e5c66f;border-left:
 .brief-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #dfc77f;font-size:13px}.brief-row strong{font-size:15px}
 @media(max-width:650px){.preference-grid{grid-template-columns:1fr}.preference.full{grid-column:auto}}
 .arrival-campaign-panel{margin:22px 0;padding:18px;background:#f7f3eb;border:1px solid var(--line);border-radius:10px}.arrival-campaign-panel h3{margin-top:0}.campaign-history-row{padding:8px 0;border-bottom:1px solid #dfc77f;font-size:12px;color:#51431f}
+.geranemo-hero{border-top:4px solid #090909}
+.geranemo-mode{display:grid;gap:6px;padding:14px 16px;background:#f3e6bf;border:1px solid #c9a44c;margin:18px 0;color:#090909;font-size:12px;line-height:1.6}
+.geranemo-mode span{color:#51431f}
+.geranemo-prompts{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.geranemo-prompts button{font-size:11px;padding:9px 12px}
+.geranemo-chat{display:grid;gap:12px;max-height:460px;overflow:auto;padding:16px;background:#f8f1df;border:1px solid #d7bd72;min-height:180px}
+.geranemo-welcome{padding:18px;background:#fffaf0;border:1px solid #d7bd72;font-size:13px;line-height:1.6}
+.geranemo-welcome p{margin-bottom:0;color:#66552f}
+.geranemo-message{max-width:92%;padding:13px 15px;background:#fffaf0;border:1px solid #d7bd72;font-size:12px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}
+.geranemo-message.user{justify-self:end;background:#090909;color:#fff0b4;border-color:#090909}
+.geranemo-message strong{display:block;font-size:10px;letter-spacing:1px;margin-bottom:7px}
+.geranemo-message-body{white-space:pre-wrap}
+.geranemo-composer{margin-top:16px;display:grid;gap:10px}
+.geranemo-composer textarea{min-height:85px;font-size:13px}
+.geranemo-compose-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.geranemo-capabilities{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}
+.geranemo-capabilities div{display:grid;gap:6px;padding:14px;background:#f3e6bf;border:1px solid #d7bd72;font-size:12px}
+.geranemo-capabilities span{color:#66552f;line-height:1.5}
+@media(max-width:520px){.geranemo-capabilities{grid-template-columns:1fr}.geranemo-message{max-width:100%}.geranemo-compose-foot{align-items:stretch}.geranemo-compose-foot button{width:100%}}
