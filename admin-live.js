@@ -19,3 +19,41 @@ async function loadOrders(){const box=$("orderQueue");if(!box)return;const {data
 async function loadAnnouncements(){const box=$("announcementQueue");if(!box)return;const {data,error}=await adminSupabase.from("business_announcements").select("*").order("created_at",{ascending:false}).limit(50);box.innerHTML="";if(error){box.append(node("p","Unable to load announcements."));return;}if(!data.length){box.append(node("p","No announcements yet.","empty"));return;}data.forEach(item=>{const el=card(item.title,item.body);el.append(node("small",item.is_published?"Published":"Draft"));box.append(el);});}
 $("announcementForm")?.addEventListener("submit",async event=>{event.preventDefault();const form=event.currentTarget,button=form.querySelector("button");button.disabled=true;showMessage("announcementStatus","Saving…");const v=Object.fromEntries(new FormData(form));const publish=v.is_published==="on";const {data:{user}}=await adminSupabase.auth.getUser();const {error}=await adminSupabase.from("business_announcements").insert({title:v.title,body:v.body,is_published:publish,published_at:publish?new Date().toISOString():null,created_by:user.id});if(error)showMessage("announcementStatus","Save failed: "+error.message);else{form.reset();showMessage("announcementStatus","Announcement saved.");await loadAnnouncements();}button.disabled=false;});
 adminSupabase.auth.getSession().then(async({data})=>{if(data.session){const ok=await verifyStaff();if(!ok){await adminSupabase.auth.signOut();loginStatus.textContent="Your saved session is not authorised for this workspace.";}}});
+let adminNotificationChannel = null;
+async function loadAdminNotifications(){
+ const box=$("notificationList"); if(!box)return;
+ const {data,error}=await adminSupabase.from("admin_notifications").select("*").order("created_at",{ascending:false}).limit(40);
+ if(error){box.textContent="Notifications could not be loaded.";return;}
+ box.innerHTML="";
+ if(!data.length)box.append(node("p","No site activity yet.","tiny"));
+ data.forEach(item=>{
+  const row=node("div",undefined,"notification-item");
+  row.append(node("strong",item.title),node("span",item.message),node("small",new Date(item.created_at).toLocaleString("en-ZA")+(item.read_at?" · Read":" · New")));
+  if(!item.read_at){row.style.borderLeft="3px solid #c9a44c";row.style.paddingLeft="9px";}
+  box.append(row);
+ });
+ const count=$("notificationCount");if(count)count.textContent=String(data.filter(x=>!x.read_at).length);
+}
+function startAdminNotificationFeed(){
+ if(adminNotificationChannel)return;
+ loadAdminNotifications();
+ adminNotificationChannel=adminSupabase.channel("ebj-admin-notifications")
+  .on("postgres_changes",{event:"INSERT",schema:"public",table:"admin_notifications"},payload=>{
+   loadAdminNotifications();
+   const item=payload.new||{};
+   if("Notification"in window&&Notification.permission==="granted"&&document.hidden){
+    try{new Notification(item.title||"EBJ site activity",{body:item.message||"There is new activity in your shop.",icon:"/icons/admin-icon.svg",tag:item.id||"ebj-admin"});}catch{}
+   }
+  }).subscribe();
+}
+$("notificationButton")?.addEventListener("click",async()=>{
+ const panel=$("notificationPanel");if(!panel)return;
+ panel.hidden=!panel.hidden;$("notificationButton").setAttribute("aria-expanded",String(!panel.hidden));
+ if(!panel.hidden)await loadAdminNotifications();
+});
+$("markNotificationsRead")?.addEventListener("click",async()=>{
+ await adminSupabase.from("admin_notifications").update({read_at:new Date().toISOString()}).is("read_at",null);
+ await loadAdminNotifications();
+});
+const originalVerifyStaff=verifyStaff;
+verifyStaff=async function(){const ok=await originalVerifyStaff();if(ok)startAdminNotificationFeed();return ok;};
