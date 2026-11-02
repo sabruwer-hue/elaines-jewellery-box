@@ -15,3 +15,16 @@
 
 /* EBJ black-and-gold identity */
 .site-header{background:#090909;border-bottom:1px solid #9e7b32}.brand,.brand strong,nav a{color:#f5ecd8}.brand em{color:#d4b35e}nav a:hover,.text-link:hover{color:#d4b35e}.announcement{background:#090909;color:#d9bd75}.hero{background:#f7f3ea}.hero h1 i,h2 i{color:#a98232}.button-dark{background:#090909;border-color:#090909}.app-icon{background:#090909;color:#d4b35e;border:1px solid #c9a44c}
+
+.new-arrivals-section{background:#e8d18b;padding:64px 24px;color:#111}
+.new-arrivals-inner{max-width:760px;margin:auto}
+.new-arrivals-inner h2{font-size:clamp(32px,5vw,52px);font-weight:normal;margin:8px 0 12px}
+.new-arrivals-inner>p:not(.eyebrow){font:14px/1.7 Arial,sans-serif;max-width:620px}
+.new-arrivals-form{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px;max-width:680px}
+.new-arrivals-form>label:not(.arrival-consent):not(.honeypot){display:grid;gap:7px;font:12px Arial,sans-serif}
+.new-arrivals-form input:not([type=checkbox]){width:100%;padding:13px;border:1px solid #8e7435;background:#fffdf8;color:#111;font:14px Arial,sans-serif}
+.new-arrivals-form .arrival-consent{grid-column:1/-1;display:flex;gap:10px;align-items:flex-start;font:12px/1.5 Arial,sans-serif}
+.new-arrivals-form .arrival-consent input{margin-top:2px;accent-color:#111}
+.new-arrivals-form button,.new-arrivals-form .form-note{grid-column:1/-1}
+.new-arrivals-form .form-note{font:11px/1.5 Arial,sans-serif;color:#51431f}
+@media(max-width:600px){.new-arrivals-form{grid-template-columns:1fr}.new-arrivals-form .arrival-consent,.new-arrivals-form button,.new-arrivals-form .form-note{grid-column:auto}}
