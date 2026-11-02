@@ -54,3 +54,4 @@ nav button.active,nav button:hover{background:#090909;color:#e5c66f;border-left:
 .brief-time{display:grid;gap:5px;font-size:11px}.brief-time input{padding:8px;border:1px solid var(--line);border-radius:6px}
 .brief-row{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px solid #dfc77f;font-size:13px}.brief-row strong{font-size:15px}
 @media(max-width:650px){.preference-grid{grid-template-columns:1fr}.preference.full{grid-column:auto}}
+.arrival-campaign-panel{margin:22px 0;padding:18px;background:#f7f3eb;border:1px solid var(--line);border-radius:10px}.arrival-campaign-panel h3{margin-top:0}.campaign-history-row{padding:8px 0;border-bottom:1px solid #dfc77f;font-size:12px;color:#51431f}
