@@ -42,7 +42,7 @@ function startAdminNotificationFeed(){
    loadAdminNotifications();
    const item=payload.new||{};
    if("Notification"in window&&Notification.permission==="granted"&&document.hidden){
-    try{new Notification(item.title||"EBJ site activity",{body:item.message||"There is new activity in your shop.",icon:"/icons/admin-icon.svg",tag:item.id||"ebj-admin"});}catch{}
+    try{const reg=await navigator.serviceWorker.ready;await reg.showNotification(item.title||"EBJ site activity",{body:item.message||"There is new activity in your shop.",icon:"/icons/admin-icon.svg",tag:item.id||"ebj-admin"});}catch{}
    }
   }).subscribe();
 }
@@ -50,6 +50,11 @@ $("notificationButton")?.addEventListener("click",async()=>{
  const panel=$("notificationPanel");if(!panel)return;
  panel.hidden=!panel.hidden;$("notificationButton").setAttribute("aria-expanded",String(!panel.hidden));
  if(!panel.hidden)await loadAdminNotifications();
+});
+$("enableBrowserAlerts")?.addEventListener("click",async()=>{
+ if(!("Notification"in window)){alert("This browser does not support notifications.");return;}
+ const permission=await Notification.requestPermission();
+ $("enableBrowserAlerts").textContent=permission==="granted"?"Browser alerts enabled":"Alerts not enabled";
 });
 $("markNotificationsRead")?.addEventListener("click",async()=>{
  await adminSupabase.from("admin_notifications").update({read_at:new Date().toISOString()}).is("read_at",null);
