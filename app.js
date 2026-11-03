@@ -5,11 +5,25 @@ const menuToggle=document.getElementById("menuToggle");const mainNav=document.ge
 menuToggle?.addEventListener("click",()=>{const open=mainNav.classList.toggle("open");menuToggle.setAttribute("aria-expanded",String(open));});
 mainNav?.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{mainNav.classList.remove("open");menuToggle?.setAttribute("aria-expanded","false");}));
 document.getElementById("year").textContent=new Date().getFullYear();
-let deferredInstall=null;const installButton=document.getElementById("installButton");const installStatus=document.getElementById("installStatus");
-window.addEventListener("beforeinstallprompt",event=>{event.preventDefault();deferredInstall=event;installButton.hidden=false;installStatus.textContent="Install Elaine’s Jewellery Box on your device.";});
-installButton?.addEventListener("click",async()=>{if(!deferredInstall){installStatus.textContent="Open your browser menu and choose Add to Home screen.";return;}deferredInstall.prompt();await deferredInstall.userChoice;deferredInstall=null;installButton.hidden=true;});
-window.addEventListener("appinstalled",()=>{installStatus.textContent="Thanks for installing Elaine’s Jewellery Box!";installButton.hidden=true;});
-if("serviceWorker"in navigator&&location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+let deferredInstall=null;
+const installButton=document.getElementById("installButton");
+const installStatus=document.getElementById("installStatus");
+function isStandalone(){return window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone===true;}
+function showInstallFallback(){
+ const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+ installStatus.textContent=isIOS?"To install: tap Share in Safari, then Add to Home Screen.":"To install: open your browser menu (⋮) and choose Install app or Add to Home screen. If the option is missing, open this site in Chrome and make sure you are online.";
+}
+if(isStandalone()){installButton.hidden=true;installStatus.textContent="Elaine’s Jewellery Box is installed on this device.";}
+else{installButton.hidden=false;installStatus.textContent="Install the shop on your phone for quick access.";}
+window.addEventListener("beforeinstallprompt",event=>{event.preventDefault();deferredInstall=event;installButton.hidden=false;installButton.textContent="Install app";installStatus.textContent="Ready to install Elaine’s Jewellery Box.";});
+installButton?.addEventListener("click",async()=>{
+ if(!deferredInstall){showInstallFallback();return;}
+ const promptEvent=deferredInstall;deferredInstall=null;
+ try{await promptEvent.prompt();const choice=await promptEvent.userChoice;if(choice?.outcome==="accepted"){installStatus.textContent="Installation started. Follow the prompt on your device.";installButton.hidden=true;}else{installStatus.textContent="Installation was cancelled. You can install later from your browser menu.";}}
+ catch{showInstallFallback();}
+});
+window.addEventListener("appinstalled",()=>{installStatus.textContent="Thanks for installing Elaine’s Jewellery Box!";installButton.hidden=true;deferredInstall=null;});
+if("serviceWorker"in navigator&&location.protocol.startsWith("http"))window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(()=>{installStatus.textContent="Offline support could not start. You can still browse the website."; }));
 function referralUrl(){const url=new URL(location.href);url.hash="";let ref=url.searchParams.get("ref");if(!ref){ref="EJ"+Math.random().toString(36).slice(2,8).toUpperCase();url.searchParams.set("ref",ref);history.replaceState({}, "",url);}return url.toString();}
 const shareButton=document.getElementById("shareButton");const copyButton=document.getElementById("copyReferral");const shareStatus=document.getElementById("shareStatus");
 shareButton?.addEventListener("click",async()=>{const url=referralUrl();const data={title:"Elaine’s Jewellery Box",text:"Discover handmade treasures at Elaine’s Jewellery Box.",url};if(navigator.share){try{await navigator.share(data);shareStatus.textContent="Thanks for sharing!";}catch(e){if(e.name!=="AbortError")shareStatus.textContent="Sharing was not available. Try copying your link.";}}else{try{await navigator.clipboard.writeText(url);shareStatus.textContent="Your referral link has been copied.";}catch(e){shareStatus.textContent=url;}}});
