@@ -28,7 +28,17 @@ $("productForm")?.addEventListener("submit",async event=>{event.preventDefault()
 async function loadOrders(){const box=$("orderQueue");if(!box)return;const {data,error}=await adminSupabase.from("orders").select("id,order_reference,customer_name,customer_email,total_amount_minor,payment_status,order_status,created_at").order("created_at",{ascending:false}).limit(100);box.innerHTML="";if(error){box.append(node("p","Unable to load orders."));return;}if(!data.length){box.append(node("p","No shop orders yet.","empty"));return;}data.forEach(item=>{const el=card(item.order_reference+" · "+item.customer_name,money(item.total_amount_minor)+" · "+item.payment_status+"\n"+item.customer_email);el.append(node("small",item.order_status+" · "+new Date(item.created_at).toLocaleString("en-ZA")));box.append(el);});}
 async function loadAnnouncements(){const box=$("announcementQueue");if(!box)return;const {data,error}=await adminSupabase.from("business_announcements").select("*").order("created_at",{ascending:false}).limit(50);box.innerHTML="";if(error){box.append(node("p","Unable to load announcements."));return;}if(!data.length){box.append(node("p","No announcements yet.","empty"));return;}data.forEach(item=>{const el=card(item.title,item.body);el.append(node("small",item.is_published?"Published":"Draft"));box.append(el);});}
 $("announcementForm")?.addEventListener("submit",async event=>{event.preventDefault();const form=event.currentTarget,button=form.querySelector("button");button.disabled=true;showMessage("announcementStatus","Saving…");const v=Object.fromEntries(new FormData(form));const publish=v.is_published==="on";const {data:{user}}=await adminSupabase.auth.getUser();const {error}=await adminSupabase.from("business_announcements").insert({title:v.title,body:v.body,is_published:publish,published_at:publish?new Date().toISOString():null,created_by:user.id});if(error)showMessage("announcementStatus","Save failed: "+error.message);else{form.reset();showMessage("announcementStatus","Announcement saved.");await loadAnnouncements();}button.disabled=false;});
-adminSupabase.auth.getSession().then(async({data})=>{if(data.session){const ok=await verifyStaff();if(!ok){await adminSupabase.auth.signOut();loginStatus.textContent="Your saved session is not authorised for this workspace.";}}});
+adminSupabase.auth.getSession().then(async({data,error})=>{
+ if(error){loginPanel.hidden=false;showMessage("securityNotice","Please sign in to continue. Your saved session could not be checked.");return;}
+ if(data.session){
+  const ok=await verifyStaff();
+  if(!ok){await adminSupabase.auth.signOut();loginPanel.hidden=false;adminShell.hidden=true;loginStatus.textContent="Your saved session is not authorised for this workspace.";}
+ }else{
+  loginPanel.hidden=false;
+  adminShell.hidden=true;
+  $("securityNotice").textContent="Private workspace: sign in with your active admin account. Only authorised staff can view customer records.";
+ }
+});
 let adminNotificationChannel = null;
 async function loadAdminNotifications(){
  const box=$("notificationList"); if(!box)return;
