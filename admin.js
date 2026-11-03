@@ -2,6 +2,20 @@ const titles={overview:["Good morning, Elaine","Your business at a glance. These
 if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(error => console.warn("Admin app offline support unavailable:", error))); }
 let adminInstallPrompt = null;
 const adminInstallButton = document.getElementById("installAdminButton");
-window.addEventListener("beforeinstallprompt", event => { event.preventDefault(); adminInstallPrompt = event; if (adminInstallButton) adminInstallButton.hidden = false; });
-adminInstallButton?.addEventListener("click", async () => { if (!adminInstallPrompt) return; adminInstallPrompt.prompt(); await adminInstallPrompt.userChoice; adminInstallPrompt = null; adminInstallButton.hidden = true; });
-window.addEventListener("appinstalled", () => { if (adminInstallButton) adminInstallButton.hidden = true; });
+function adminStandalone(){return window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone===true;}
+function adminInstallHelp(){
+ const ios=/iphone|ipad|ipod/i.test(navigator.userAgent);
+ const message=ios?"To install the private admin app: open this page in Safari, tap Share, then Add to Home Screen.":"To install the private admin app: open the browser menu (⋮) and choose Install app or Add to Home screen. If unavailable, use Chrome and check that the site is online.";
+ let note=document.getElementById("adminInstallHelp");
+ if(!note){note=document.createElement("p");note.id="adminInstallHelp";note.className="tiny";adminInstallButton?.insertAdjacentElement("afterend",note);}
+ if(note)note.textContent=message;
+}
+if(adminInstallButton){if(adminStandalone()){adminInstallButton.hidden=true;}else{adminInstallButton.hidden=false;}}
+window.addEventListener("beforeinstallprompt",event=>{event.preventDefault();adminInstallPrompt=event;if(adminInstallButton){adminInstallButton.hidden=false;adminInstallButton.textContent="Install Admin App";}});
+adminInstallButton?.addEventListener("click",async()=>{
+ if(!adminInstallPrompt){adminInstallHelp();return;}
+ const promptEvent=adminInstallPrompt;adminInstallPrompt=null;
+ try{await promptEvent.prompt();const choice=await promptEvent.userChoice;if(choice?.outcome==="accepted"){adminInstallButton.hidden=true;const note=document.getElementById("adminInstallHelp");if(note)note.textContent="Installation started. Follow the prompt on your device.";}else{adminInstallHelp();}}
+ catch{adminInstallHelp();}
+});
+window.addEventListener("appinstalled",()=>{if(adminInstallButton)adminInstallButton.hidden=true;adminInstallPrompt=null;const note=document.getElementById("adminInstallHelp");if(note)note.textContent="The private admin app is installed on this device.";});
