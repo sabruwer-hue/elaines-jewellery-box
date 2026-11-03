@@ -36,10 +36,12 @@ jobs:
           cp admin.html www/index.html
           cp admin.css admin.js admin-live.js admin.webmanifest sw.js update-password.html www/
           cp icons/admin-icon.svg www/icons/
+      - name: Select separate admin app configuration
+        run: cp admin-capacitor.config.json capacitor.config.json
       - name: Generate separate Android project
-        run: npx cap add android --config admin-capacitor.config.json
+        run: npx cap add android
       - name: Sync Capacitor assets
-        run: npx cap sync android --config admin-capacitor.config.json
+        run: npx cap sync android
       - name: Build Android debug APK
         working-directory: android
         run: |
@@ -50,7 +52,8 @@ jobs:
       - name: Publish separate admin APK
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ebj-admin-build-${{ github.run_number }}
-          name: EBJ Admin Android build ${{ github.run_number }}
+          tag_name: ebj-admin-latest
+          name: EBJ Admin Android App
           make_latest: false
+          overwrite_files: true
           files: ebj-admin.apk
