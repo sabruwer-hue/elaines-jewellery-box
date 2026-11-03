@@ -142,7 +142,7 @@ function addGeranemoMessage(role,content){
  const chat=$("geranemoChat");if(!chat)return;
  const welcome=chat.querySelector(".geranemo-welcome");if(welcome)welcome.remove();
  const bubble=node("article",undefined,"geranemo-message "+role);
- const who=node("strong",role==="user"?"Elaine":"Geranemo");
+ const who=node("strong",role==="user"?(document.documentElement.dataset.staffRole==="owner"?"Elaine":"Admin"):"Geranemo");
  const body=node("div",content,"geranemo-message-body");
  bubble.append(who,body);chat.append(bubble);chat.scrollTop=chat.scrollHeight;
 }
