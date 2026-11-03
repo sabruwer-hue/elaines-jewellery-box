@@ -5,13 +5,13 @@ A private, owner-only business command centre for Elaine. It is separate from th
 
 ## Access and account setup
 - One owner account for Elaine by default; no public registration and no shared staff accounts.
-- First-time setup passphrase requested by the owner: `Elaines Oppertunity`.
+- First-time setup must use a one-time invitation secret configured server-side. Do not place the secret in client-side code, URLs, public repositories, or committed configuration.
 - IMPORTANT: this phrase is a bootstrap/setup secret only. Never put it in client-side JavaScript, HTML, a public repository, a URL, or a committed configuration file. Configure it as a server-side secret, preferably as a one-time invitation that expires after first use.
 - First successful setup requires Elaine to verify her email and create her permanent login credentials.
 - Store passwords only as strong salted password hashes through a reputable authentication provider; never store or email plaintext passwords.
 - Require email verification, password reset, rate limiting, secure sessions, logout, and optional two-factor authentication.
 - Log security-sensitive events. Do not expose private customer records in public pages, APK assets, or GitHub Pages.
-- If the bootstrap phrase has already been shared outside a private channel, rotate it before enabling setup.
+- Any previously committed bootstrap phrase must be treated as compromised and rotated before enabling setup. Removing it from this file does not remove it from Git history.
 
 ## Dashboard overview
 Show actionable notifications and counts for:

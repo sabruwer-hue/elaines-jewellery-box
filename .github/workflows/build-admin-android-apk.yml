@@ -52,8 +52,7 @@ jobs:
       - name: Publish separate admin APK
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ebj-admin-latest
-          name: EBJ Admin Android App
+          tag_name: ebj-admin-build-${{ github.run_number }}
+          name: EBJ Admin Android App build ${{ github.run_number }}
           make_latest: false
-          overwrite_files: true
           files: ebj-admin.apk
