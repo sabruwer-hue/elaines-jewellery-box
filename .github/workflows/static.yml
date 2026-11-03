@@ -33,11 +33,16 @@ jobs:
         uses: actions/checkout@v4
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Upload artifact
+      - name: Prepare public website files only
+        run: |
+          mkdir -p site/icons
+          cp index.html styles.css app.js manifest.webmanifest admin.html admin.css admin.js admin-live.js admin.webmanifest update-password.html sw.js robots.txt sitemap.xml site/
+          cp icons/*.svg site/icons/
+          touch site/.nojekyll
+      - name: Upload public website artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          path: 'site'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
