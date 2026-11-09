@@ -44,7 +44,7 @@ drop trigger if exists historical_creation_code on public.historical_creations;
 create trigger historical_creation_code before insert on public.historical_creations
 for each row execute function public.assign_creation_code();
 create or replace function public.protect_creation_code()
-returns trigger language plpgsql as $$
+returns trigger language plpgsql set search_path = public as $
 begin
   if new.creation_code <> old.creation_code then
     raise exception 'Creation codes are permanent and cannot be changed.';
@@ -55,7 +55,7 @@ drop trigger if exists historical_creation_code_immutable on public.historical_c
 create trigger historical_creation_code_immutable before update on public.historical_creations
 for each row execute function public.protect_creation_code();
 create or replace function public.touch_historical_creation()
-returns trigger language plpgsql as $$
+returns trigger language plpgsql set search_path = public as $
 begin new.updated_at = now(); return new; end $$;
 drop trigger if exists historical_creation_touch on public.historical_creations;
 create trigger historical_creation_touch before update on public.historical_creations
@@ -78,6 +78,8 @@ create table if not exists public.creation_enquiries (
 create index if not exists historical_creations_public_idx on public.historical_creations(is_published,category,created_at desc);
 create index if not exists historical_creations_code_idx on public.historical_creations(creation_code);
 create index if not exists creation_enquiries_created_idx on public.creation_enquiries(created_at desc);
+create index if not exists creation_enquiries_creation_id_idx on public.creation_enquiries(creation_id);
+create index if not exists historical_creations_created_by_idx on public.historical_creations(created_by);
 
 alter table public.historical_creations enable row level security;
 alter table public.creation_enquiries enable row level security;
@@ -86,7 +88,7 @@ drop policy if exists "Public can view published archive" on public.historical_c
 create policy "Public can view published archive" on public.historical_creations for select using (is_published = true);
 drop policy if exists "Staff manage historical archive" on public.historical_creations;
 create policy "Staff manage historical archive" on public.historical_creations for all to authenticated
-using (exists(select 1 from public.staff_members s where s.user_id=auth.uid() and s.is_active=true and s.role in ('owner','admin')))
+using (exists(select 1 from public.staff_members s where s.user_id=(select auth.uid()) and s.is_active=true and s.role in ('owner','admin')))
 with check (exists(select 1 from public.staff_members s where s.user_id=auth.uid() and s.is_active=true and s.role in ('owner','admin')));
 drop policy if exists "Public submit creation enquiries" on public.creation_enquiries;
 create policy "Public submit creation enquiries" on public.creation_enquiries for insert to anon, authenticated
