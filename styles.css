@@ -38,3 +38,7 @@
 .new-arrivals-section{background:#d4b35e;color:#090909}
 .new-arrivals-form input:not([type=checkbox]){border-color:#9b7629}
 .public-card{border-color:#d8c79e}
+
+
+/* All interactive buttons use a consistent rectangular shape with softly rounded corners. */
+button, input[type="button"], input[type="submit"], input[type="reset"], a.button, .nav-cta { border-radius: 10px; }
