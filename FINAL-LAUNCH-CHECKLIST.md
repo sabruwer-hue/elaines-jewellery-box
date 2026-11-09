@@ -50,7 +50,7 @@ This is the working checklist. Status labels distinguish deployed foundations fr
 
 - [ ] Populate the currently empty storefront catalogue with approved products, photographs, descriptions, prices and stock.
 - [ ] Connect the storefront to published product and variant records; provide an honest empty state until real products exist.
-- [ ] Implement product editing, category management, inventory adjustments and product image upload.
+- [x] Basic product editing, price/stock adjustment, category creation and private product-photo upload controls implemented.\n- [ ] Complete category editing/deactivation and product category reassignment.\n- [ ] Verify product uploads, signed image delivery, publish/unpublish and stock display end-to-end.
 - [ ] Build the agreed pre-loved/second-hand catalogue area.
 - [ ] Confirm collection, delivery, shipping fees and service areas.
 - [ ] Implement cart and secure checkout.
