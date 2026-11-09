@@ -74,3 +74,149 @@ nav button.active,nav button:hover{background:#090909;color:#e5c66f;border-left:
 .geranemo-capabilities div{display:grid;gap:6px;padding:14px;background:#f3e6bf;border:1px solid #d7bd72;font-size:12px}
 .geranemo-capabilities span{color:#66552f;line-height:1.5}
 @media(max-width:520px){.geranemo-capabilities{grid-template-columns:1fr}.geranemo-message{max-width:100%}.geranemo-compose-foot{align-items:stretch}.geranemo-compose-foot button{width:100%}}
+
+
+/* Rounded admin controls and a mobile-first dashboard layout. */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.outline,
+.primary,
+.text-button {
+  border-radius: 10px;
+}
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  min-height: 44px;
+}
+.top-actions {
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.content,
+.panel,
+.stats article,
+.live-card {
+  min-width: 0;
+}
+.live-card,
+.panel {
+  overflow-wrap: anywhere;
+}
+.live-card select {
+  width: 100%;
+  max-width: 100%;
+}
+@media (max-width: 850px) {
+  .topbar {
+    height: auto;
+    min-height: 72px;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 18px;
+  }
+  .top-actions {
+    min-width: 0;
+    max-width: 100%;
+  }
+  .sidebar {
+    min-width: 0;
+    overflow: hidden;
+  }
+  .sidebar nav {
+    max-width: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: thin;
+  }
+  .sidebar nav button {
+    min-height: 44px;
+  }
+  .content {
+    min-width: 0;
+    padding: 22px 14px;
+  }
+  .page-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+@media (max-width: 650px) {
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px 14px;
+  }
+  .topbar > .brand {
+    align-self: flex-start;
+  }
+  .top-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    width: 100%;
+  }
+  .top-actions > * {
+    min-width: 0;
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    overflow-wrap: anywhere;
+  }
+  .top-actions .preview {
+    display: none;
+  }
+  .top-actions button,
+  .top-actions a {
+    padding: 10px 8px;
+    font-size: 11px;
+  }
+  .stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+  .stats article,
+  .panel {
+    padding: 15px;
+  }
+  .columns,
+  .doc-grid,
+  .preference-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .doc-grid label,
+  .doc-grid label:nth-child(n) {
+    grid-column: 1 / -1;
+  }
+  .panel-head,
+  .brief-row {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .live-card select,
+  .doc-grid button,
+  .doc-grid input,
+  .doc-grid textarea {
+    max-width: 100%;
+  }
+  #notificationPanel {
+    top: 132px;
+    right: 8px;
+    width: calc(100vw - 16px);
+  }
+}
+@media (max-width: 380px) {
+  .stats {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .content {
+    padding: 18px 10px;
+  }
+  .stats article,
+  .panel {
+    padding: 12px;
+  }
+}
