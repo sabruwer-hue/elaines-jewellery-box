@@ -48,7 +48,7 @@ This is the working checklist. Status labels distinguish deployed foundations fr
 
 ## C. Public storefront and shop
 
-- [ ] Replace example product cards with actual approved products, photographs, descriptions, prices and stock.
+- [ ] Populate the currently empty storefront catalogue with approved products, photographs, descriptions, prices and stock.
 - [ ] Connect the storefront to published product and variant records; provide an honest empty state until real products exist.
 - [ ] Implement product editing, category management, inventory adjustments and product image upload.
 - [ ] Build the agreed pre-loved/second-hand catalogue area.
