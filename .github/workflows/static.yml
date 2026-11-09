@@ -26,7 +26,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: \${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -38,7 +38,7 @@ jobs:
           mkdir -p site/icons
           cp index.html styles.css app.js manifest.webmanifest privacy.html terms.html admin.html admin.css admin.js admin-live.js admin-finance.js admin.webmanifest update-password.html archive.html archive.css archive.js archive-admin.html archive-admin.js sw.js robots.txt sitemap.xml site/
           cp icons/*.svg site/icons/
-          printf '%s\\n' 'elainesjewellerybox.co.za' > site/CNAME
+          printf '%s\n' 'elainesjewellerybox.co.za' > site/CNAME
           touch site/.nojekyll
       - name: Upload public website artifact
         uses: actions/upload-pages-artifact@v3
