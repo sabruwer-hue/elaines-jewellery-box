@@ -69,7 +69,9 @@ begin
  return new;
 end; $$;
 drop trigger if exists creation_enquiry_rate_limit on public.creation_enquiries;
-create trigger creation_enquiry_rate_limit before insert on public.creation_enquiries
+create trigger creation_enquiry_rate_limit after insert on public.creation_enquiries
 for each row execute function public.enforce_creation_enquiry_rate_limit();
 
 revoke execute on function public.enforce_creation_enquiry_rate_limit() from public, anon, authenticated;
+
+create policy "No direct access to archive enquiry rate limits" on public.creation_enquiry_rate_limits for all to anon, authenticated using (false) with check (false);
