@@ -158,7 +158,7 @@ This status reflects repository inspection, Supabase database and Edge Function 
 - Inspected public business tables have row-level security enabled.
 - Private business-record and product-image storage buckets are configured with staff/public rules.
 - Public intake Edge Function is active at version 10. It validates the publishable key, allowed origins, input size and form fields; uses persistent hashed-IP rate limiting; and handles the existing public enquiry/review/subscription flows.
-- The admin workspace supports product creation, order viewing, Studio enquiry status, customer-care case status, review moderation, homepage announcements, notification preferences and daily briefing.
+- The admin workspace supports product creation/editing, price/stock adjustment, basic category creation, private product-photo upload, order viewing, Studio enquiry status, customer-care case status, review moderation, homepage announcements, notification preferences and daily briefing. Product-image delivery uses expiring signed URLs for published products.
 - Geranemo has a deployed read/advise/prepare foundation. It is not yet the full owner-approved business automation system.
 - Invoice tables and the basic admin invoice workflow exist: draft invoices from eligible orders or accepted Studio quotes, printable customer copy, issue-state recording, pending payment entries and manual payment verification.
 - Studio quote builder is implemented with line items, scope, assumptions, exclusions, deposit, payment terms, roadmap steps, draft saving and versioned revisions.
@@ -174,7 +174,7 @@ This status reflects repository inspection, Supabase database and Edge Function 
 - Verify anonymous and staff access against the archive and signed-image policies with real browser/API tests.
 - Populate the Creation Archive with actual historical work and approved photos; the live archive currently contains zero creations.
 - Add real products, approved photos, prices and stock. The homepage now shows an honest empty-catalogue message until real products are entered.
-- Complete product editing, category management, stock adjustments and product image upload integration.
+- Complete category editing/deactivation, product category reassignment and end-to-end testing of product upload, signed image delivery, publish/unpublish and stock display.
 - Complete cart, checkout, customer accounts (if required), payment provider integration, signed callbacks, reconciliation, refunds and fulfilment.
 - Complete Second Life Studio reference-photo upload and private attachment viewing.
 - Confirm transactional email provider secrets and verified sender domain; test actual quote, invoice and customer email delivery.
