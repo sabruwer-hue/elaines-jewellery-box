@@ -22,7 +22,7 @@ create table if not exists public.creation_code_counters (
   last_value bigint not null default 0
 );
 create or replace function public.assign_creation_code()
-returns trigger language plpgsql security definer set search_path = public as $$
+returns trigger language plpgsql set search_path = public as $
 declare p text; n bigint;
 begin
   if new.creation_code is not null and new.creation_code <> '' then
@@ -114,3 +114,10 @@ with check (bucket_id='creation-archive' and exists(select 1 from public.staff_m
 drop policy if exists "Staff delete archive images" on storage.objects;
 create policy "Staff delete archive images" on storage.objects for delete to authenticated
 using (bucket_id='creation-archive' and exists(select 1 from public.staff_members s where s.user_id=auth.uid() and s.is_active=true and s.role in ('owner','admin')));
+
+-- Explicit Data API privileges; row-level security above remains authoritative.
+grant select on public.historical_creations to anon, authenticated;
+grant insert, update, delete on public.historical_creations to authenticated;
+grant insert on public.creation_enquiries to anon, authenticated;
+grant select, update on public.creation_enquiries to authenticated;
+grant select, insert, update on public.creation_code_counters to authenticated;
