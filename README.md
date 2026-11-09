@@ -19,7 +19,7 @@ A jewellery-first South African storefront and installable PWA, with a private o
 
 ## Still not launch-ready
 
-- No real product catalogue, product photographs, prices or stock have been entered. The three homepage product cards are labelled examples, not products for sale.
+- No real product catalogue, product photographs, prices or stock have been entered. The homepage now shows an honest empty-catalogue message until real products are entered.
 - No real historical creations have been entered into the Creation Archive yet.
 - Customer cart, checkout, customer accounts, online payment gateway, payment callbacks, refunds and complete fulfilment are not implemented and end-to-end tested.
 - Customer reference-photo upload for Studio requests and the completed-project photo library are incomplete.
