@@ -28,13 +28,13 @@ jobs:
         uses: actions/configure-pages@v5
       - name: Check JavaScript syntax
         run: |
-          for file in app.js admin.js admin-live.js admin-finance.js quotes.js archive.js archive-admin.js; do
+          for file in app.js admin.js admin-live.js admin-finance.js quotes.js quote-portal.js archive.js archive-admin.js; do
             node --check "$file"
           done
       - name: Prepare public website files only
         run: |
           mkdir -p site/icons
-          cp index.html styles.css app.js manifest.webmanifest privacy.html terms.html admin.html admin.css admin.js admin-live.js admin-finance.js quotes.js quote.html admin.webmanifest update-password.html archive.html archive.css archive.js archive-admin.html archive-admin.js sw.js robots.txt sitemap.xml site/
+          cp index.html styles.css app.js manifest.webmanifest privacy.html terms.html admin.html admin.css admin.js admin-live.js admin-finance.js quotes.js quote.html quote-portal.js admin.webmanifest update-password.html archive.html archive.css archive.js archive-admin.html archive-admin.js sw.js robots.txt sitemap.xml site/
           cp icons/*.svg site/icons/
           printf '%s\n' 'elainesjewellerybox.co.za' > site/CNAME
           touch site/.nojekyll
