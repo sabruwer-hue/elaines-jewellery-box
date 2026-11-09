@@ -90,7 +90,7 @@ using (exists(select 1 from public.staff_members s where s.user_id=auth.uid() an
 with check (exists(select 1 from public.staff_members s where s.user_id=auth.uid() and s.is_active=true and s.role in ('owner','admin')));
 drop policy if exists "Public submit creation enquiries" on public.creation_enquiries;
 create policy "Public submit creation enquiries" on public.creation_enquiries for insert to anon, authenticated
-with check (consent = true and char_length(customer_name) between 2 and 120 and char_length(customer_email) <= 254 and char_length(message) between 5 and 3000 and exists(select 1 from public.historical_creations c where c.id=creation_id and c.is_published=true and c.creation_code=creation_code));
+with check (consent = true and char_length(customer_name) between 2 and 120 and char_length(customer_email) <= 254 and char_length(message) between 5 and 3000 and exists(select 1 from public.historical_creations c where c.id=creation_id and c.is_published=true and c.creation_code=creation_enquiries.creation_code));
 drop policy if exists "Staff manage creation enquiries" on public.creation_enquiries;
 create policy "Staff manage creation enquiries" on public.creation_enquiries for all to authenticated
 using (exists(select 1 from public.staff_members s where s.user_id=auth.uid() and s.is_active=true and s.role in ('owner','admin')))
