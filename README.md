@@ -13,7 +13,7 @@ A jewellery-first South African storefront and installable PWA, with a private o
 - Creation Archive supports permanent category-based creation codes, search, category/availability filters, detail views and recreation enquiries. Private/unpublished records and their images are not public.
 - Second Life Studio quotation builder supports itemised costs, scope, assumptions, exclusions, deposits, payment terms, roadmap steps, draft saving and versioned revisions. A customer portal supports accept/decline/request-changes.
 - Invoice workspace supports draft invoices linked to eligible orders or accepted Studio quotes, printing, issue-state recording and payment entries with manual verification.
-- Admin workspace includes product creation, order viewing, Studio enquiry review, customer-care case queues, review moderation, homepage announcements, notifications and a Geranemo read/advise/prepare interface.
+- Admin workspace includes product creation/editing, price and stock adjustment, basic category creation, private product-photo upload, order viewing, Studio enquiry review, customer-care case queues, review moderation, homepage announcements, notifications and a Geranemo read/advise/prepare interface. Published product photos are delivered using expiring signed URLs.
 - GitHub Pages workflow includes JavaScript syntax checks. Latest verified Pages deployment succeeded (run #148); later repository-only source/documentation commits may trigger another run.
 - Android admin APK workflow has produced debug APK build #38 successfully. The APK download link points to the GitHub releases page.
 
