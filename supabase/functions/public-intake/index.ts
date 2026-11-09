@@ -70,11 +70,23 @@ async function notifyAdmin(eventType: string, title: string, message: string, re
     const [reviews, announcements, products] = await Promise.all([
       admin.from("customer_reviews").select("id,display_name,rating,title,review_text,created_at").eq("status","published").order("created_at",{ascending:false}).limit(12),
       admin.from("business_announcements").select("id,title,body,published_at").eq("is_published",true).not("published_at","is",null).lte("published_at",new Date().toISOString()).order("published_at",{ascending:false}).limit(6),
-      admin.from("products").select("id,name,description,slug,product_variants(id,variant_name,price_minor,stock_on_hand)").eq("is_published",true).order("created_at",{ascending:false}).limit(60)
+      admin.from("products").select("id,name,description,slug,product_variants(id,variant_name,price_minor,stock_on_hand,is_active),product_images(storage_path,alt_text,sort_order)").eq("is_published",true).order("created_at",{ascending:false}).limit(60)
     ]);
     if (reviews.error || announcements.error || products.error)
       return json({ error: "Unable to load public shop content." }, 500, origin);
-    return json({ reviews: reviews.data, announcements: announcements.data, products: products.data }, 200, origin);
+    const publicProducts = await Promise.all((products.data ?? []).map(async (product: any) => {
+      const { product_images, ...publicProduct } = product;
+      const images = (product_images ?? []).sort((a: any, b: any) => a.sort_order - b.sort_order);
+      let imageUrl: string | null = null;
+      let imageAlt = product.name;
+      if (images[0]) {
+        const { data: signedImage, error: imageError } = await admin.storage.from("ebj-product-images").createSignedUrl(images[0].storage_path, 3600);
+        if (!imageError && signedImage?.signedUrl) imageUrl = signedImage.signedUrl;
+        imageAlt = images[0].alt_text || product.name;
+      }
+      return { ...publicProduct, image_url: imageUrl, image_alt: imageAlt };
+    }));
+    return json({ reviews: reviews.data, announcements: announcements.data, products: publicProducts }, 200, origin);
   }
   if (req.method !== "POST") return json({ error: "Method not allowed." }, 405, origin);
 
