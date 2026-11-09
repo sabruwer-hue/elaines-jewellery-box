@@ -242,8 +242,9 @@
   }
 
   function printInvoice(invoice,lines,payments) {
-    const w = window.open("","_blank","noopener,noreferrer");
+    const w = window.open("","_blank");
     if (!w) { alert("Allow pop-ups for this site to print the invoice."); return; }
+    w.opener = null;
     const lineRows = lines.map(line => "<tr><td>"+esc(line.description)+"</td><td>"+esc(line.quantity)+"</td><td>"+money(line.unit_amount_minor)+"</td><td>"+money(line.line_total_minor)+"</td></tr>").join("");
     const paid = Number(invoice.amount_paid_minor||0), balance = Math.max(0,Number(invoice.total_minor)-paid);
     const address = invoice.billing_address && typeof invoice.billing_address === "object" ? Object.values(invoice.billing_address).filter(Boolean).join(", ") : "";
