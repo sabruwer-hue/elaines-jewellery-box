@@ -148,5 +148,31 @@ Geranemo is an advisory assistant inside the admin gateway. It can:
 4. **Geranemo:** connect a server-side AI service, scoped data access, owner instructions, draft/review workflow, and audit trail.
 5. **Launch hardening:** test security, permissions, backups, mobile usability, POPIA notices, payment flows, and recovery.
 
-## Current status
-This document records the agreed scope only. The current GitHub Pages/PWA prototype is static and does not yet provide secure admin authentication, a database, persistent records, private photo storage, live notifications, payment processing, analytics, or a functioning AI assistant. Do not present a front-end mockup as a secure or operational admin system.
+## Current status — verified 9 November 2026
+
+The project has progressed beyond the original static-only prototype. The GitHub Pages/PWA storefront remains static hosting, while Supabase provides the live data and authentication layer.
+
+### Implemented and verified
+- Supabase project is active and healthy.
+- All 36 inspected public tables have row-level security enabled.
+- Active owner/admin staff roster and email/password sign-in are connected to the admin gateway.
+- Live admin queues and controls exist for product creation, order viewing, Studio enquiry status, customer-care case status, review moderation and homepage announcements.
+- Admin notification inbox, per-user notification preferences, daily business briefing and browser push subscription records are present.
+- Geranemo assistant Edge Function is deployed and the admin interface is connected in read / advise / prepare mode.
+- Invoice register tables are deployed: invoices, invoice lines and invoice payment records. The admin interface supports draft invoices from accepted orders or Studio quotes, printing, marking as issued, recording pending payments and manual payment verification.
+- Storage buckets are configured: private business records and product images. The product-image bucket is private at the bucket level; public reads are allowed only for image paths linked to published products. Private records are staff-only.
+
+### Still outstanding before launch
+- Complete quote builder, quote versioning, owner approval and customer email issuance workflow.
+- End-to-end customer checkout, order submission, Yoco/payment gateway integration and order fulfilment controls.
+- Product editing, category management UI, inventory adjustments and product image upload integration.
+- Private customer attachment uploads and completed-project photo archive with consent controls.
+- Full customer correspondence, including staff replies and email delivery.
+- Invoice business identity/tax configuration, customer email delivery and end-to-end invoice/payment testing.
+- Business expense ledger, accurate finance reports, margin calculations and reconciliation.
+- Geranemo action approval workflow and broader scoped data access.
+- Configure transactional email provider secrets and verify sender domain before enabling automated email.
+- Enable leaked-password protection in Supabase Auth where supported by the project's plan.
+- Test backups and restore, access control, mobile behaviour, POPIA notices and production checkout.
+
+Do not treat any feature as production-ready solely because its interface or database table exists. Each workflow must be tested end-to-end with test accounts and test records before launch.
