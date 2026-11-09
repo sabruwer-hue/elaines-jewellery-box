@@ -8,6 +8,10 @@ on:
       - 'admin.css'
       - 'admin.js'
       - 'admin-live.js'
+      - 'admin-finance.js'
+      - 'quotes.js'
+      - 'quote.html'
+      - 'quote-portal.js'
       - 'admin.webmanifest'
       - 'update-password.html'
       - 'sw.js'
@@ -34,7 +38,7 @@ jobs:
         run: |
           mkdir -p www/icons
           cp admin.html www/index.html
-          cp admin.css admin.js admin-live.js admin.webmanifest sw.js update-password.html www/
+          cp admin.css admin.js admin-live.js admin-finance.js quotes.js quote.html quote-portal.js admin.webmanifest sw.js update-password.html www/
           cp icons/admin-icon.svg www/icons/
       - name: Select separate admin app configuration
         run: cp admin-capacitor.config.json capacitor.config.json
