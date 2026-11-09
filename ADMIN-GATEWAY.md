@@ -173,7 +173,7 @@ This status reflects repository inspection, Supabase database and Edge Function 
 - Enable Supabase Auth leaked-password protection; the current Supabase security advisor still reports it disabled.
 - Verify anonymous and staff access against the archive and signed-image policies with real browser/API tests.
 - Populate the Creation Archive with actual historical work and approved photos; the live archive currently contains zero creations.
-- Add real products, approved photos, prices and stock. The current three homepage product cards are clearly labelled examples.
+- Add real products, approved photos, prices and stock. The homepage now shows an honest empty-catalogue message until real products are entered.
 - Complete product editing, category management, stock adjustments and product image upload integration.
 - Complete cart, checkout, customer accounts (if required), payment provider integration, signed callbacks, reconciliation, refunds and fulfilment.
 - Complete Second Life Studio reference-photo upload and private attachment viewing.
