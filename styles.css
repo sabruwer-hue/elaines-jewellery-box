@@ -45,3 +45,45 @@ button, input[type="button"], input[type="submit"], input[type="reset"], a.butto
 
 /* Legal information pages and responsive footer */
 .legal-page{max-width:900px;margin:0 auto;padding:70px 24px 100px;color:var(--ink)}.legal-page h1{font-size:clamp(42px,6vw,64px);font-weight:normal;margin:0 0 24px}.legal-page h2{font-size:25px;font-weight:normal;margin:36px 0 10px}.legal-page p,.legal-page li{font:15px/1.8 Arial,sans-serif;color:#555348}.legal-page a{color:#8b6724}.legal-page ul{padding-left:24px}.legal-note{border-left:3px solid #c9a44c;padding:14px 18px;background:#f7f3ea;margin-top:35px!important;font-size:13px!important}.footer-legal{display:flex;gap:16px;flex-wrap:wrap;align-items:center;justify-content:flex-end}.footer-legal a{font:10px Arial,sans-serif;color:#e7cc83;text-decoration:none}.app-icon img{width:100%;height:100%;object-fit:cover;border-radius:inherit}.app-icon{overflow:hidden}@media(max-width:800px){.footer-legal{justify-content:flex-start;width:100%}}
+
+
+/* Site-wide button shape and comfortable touch targets. */
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+.button,
+.nav-cta {
+  border-radius: 10px;
+}
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  min-height: 44px;
+}
+.app-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.app-buttons .button {
+  margin: 0;
+}
+.app-buttons p {
+  flex: 1 0 100%;
+  width: 100%;
+  margin: 0;
+}
+@media (max-width: 800px) {
+  .app-buttons {
+    justify-content: flex-start;
+  }
+}
+@media (max-width: 430px) {
+  .app-buttons .button {
+    width: 100%;
+  }
+}
