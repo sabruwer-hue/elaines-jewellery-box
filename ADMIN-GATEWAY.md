@@ -148,31 +148,51 @@ Geranemo is an advisory assistant inside the admin gateway. It can:
 4. **Geranemo:** connect a server-side AI service, scoped data access, owner instructions, draft/review workflow, and audit trail.
 5. **Launch hardening:** test security, permissions, backups, mobile usability, POPIA notices, payment flows, and recovery.
 
-## Current status — verified 9 November 2026
+## Current status — reconciled 9 November 2026
 
-The project has progressed beyond the original static-only prototype. The GitHub Pages/PWA storefront remains static hosting, while Supabase provides the live data and authentication layer.
+This status reflects repository inspection, Supabase database and Edge Function inspection, the latest available security advisors, and GitHub Actions results. A deployed screen or database table is not considered production-ready until its workflow is tested end-to-end.
 
-### Implemented and verified
+### Implemented and verified foundations
 - Supabase project is active and healthy.
-- All 36 inspected public tables have row-level security enabled.
-- Active owner/admin staff roster and email/password sign-in are connected to the admin gateway.
-- Live admin queues and controls exist for product creation, order viewing, Studio enquiry status, customer-care case status, review moderation and homepage announcements.
-- Admin notification inbox, per-user notification preferences, daily business briefing and browser push subscription records are present.
-- Geranemo assistant Edge Function is deployed and the admin interface is connected in read / advise / prepare mode.
-- Invoice register tables are deployed: invoices, invoice lines and invoice payment records. The admin interface supports draft invoices from accepted orders or Studio quotes, printing, marking as issued, recording pending payments and manual payment verification.
-- Storage buckets are configured: private business records and product images. The product-image bucket is private at the bucket level; public reads are allowed only for image paths linked to published products. Private records are staff-only.
+- Owner/admin sign-in uses Supabase Auth and checks the active staff roster.
+- Inspected public business tables have row-level security enabled.
+- Private business-record and product-image storage buckets are configured with staff/public rules.
+- Public intake Edge Function is active at version 10. It validates the publishable key, allowed origins, input size and form fields; uses persistent hashed-IP rate limiting; and handles the existing public enquiry/review/subscription flows.
+- The admin workspace supports product creation, order viewing, Studio enquiry status, customer-care case status, review moderation, homepage announcements, notification preferences and daily briefing.
+- Geranemo has a deployed read/advise/prepare foundation. It is not yet the full owner-approved business automation system.
+- Invoice tables and the basic admin invoice workflow exist: draft invoices from eligible orders or accepted Studio quotes, printable customer copy, issue-state recording, pending payment entries and manual payment verification.
+- Studio quote builder is implemented with line items, scope, assumptions, exclusions, deposit, payment terms, roadmap steps, draft saving and versioned revisions.
+- Customer quotation portal supports accept, decline and request changes through a secure expiring token.
+- Historical Creation Archive is implemented with permanent category codes, immutable code trigger, staff management page, public search/detail/enquiry page and separate enquiry records.
+- Archive records are now publicly readable only when published and non-private. The archive Storage bucket is private; signed image access is restricted to images associated with published, non-private records. Normal staff DELETE access to historical creation rows has been removed.
+- Archive enquiry rate limiting and persistent public-intake hashed-IP rate limiting are deployed.
+- The public site displays the EBJ SVG artwork in headers/footers and has canonical/Open Graph/favicon metadata across the homepage, archive and legal pages.
+- GitHub Pages syntax-check and deployment pipeline succeeded on the latest verified website commit (run #148). Android admin debug APK build #38 succeeded. The APK is not a signed production release.
 
 ### Still outstanding before launch
-- Complete quote builder, quote versioning, owner approval and customer email issuance workflow.
-- End-to-end customer checkout, order submission, Yoco/payment gateway integration and order fulfilment controls.
-- Product editing, category management UI, inventory adjustments and product image upload integration.
-- Private customer attachment uploads and completed-project photo archive with consent controls.
-- Full customer correspondence, including staff replies and email delivery.
-- Invoice business identity/tax configuration, customer email delivery and end-to-end invoice/payment testing.
-- Business expense ledger, accurate finance reports, margin calculations and reconciliation.
-- Geranemo action approval workflow and broader scoped data access.
-- Configure transactional email provider secrets and verify sender domain before enabling automated email.
-- Enable leaked-password protection in Supabase Auth where supported by the project's plan.
-- Test backups and restore, access control, mobile behaviour, POPIA notices and production checkout.
+- Enable Supabase Auth leaked-password protection; the current Supabase security advisor still reports it disabled.
+- Verify anonymous and staff access against the archive and signed-image policies with real browser/API tests.
+- Populate the Creation Archive with actual historical work and approved photos; the live archive currently contains zero creations.
+- Add real products, approved photos, prices and stock. The current three homepage product cards are clearly labelled examples.
+- Complete product editing, category management, stock adjustments and product image upload integration.
+- Complete cart, checkout, customer accounts (if required), payment provider integration, signed callbacks, reconciliation, refunds and fulfilment.
+- Complete Second Life Studio reference-photo upload and private attachment viewing.
+- Confirm transactional email provider secrets and verified sender domain; test actual quote, invoice and customer email delivery.
+- Complete full customer correspondence and staff reply history.
+- Build the Completed Project Library with before/after photos, customer consent and linked quote/invoice records.
+- Add a complete fulfilment roadmap to invoices and finish A4/PDF/evidence bundles for all record types.
+- Complete expenses, payment reconciliation, margin/profitability reports and broader Cosmo BI.
+- Complete Geranemo's live provider verification, source-linked business data, action approval, audit trail and owner-editable preferences.
+- Complete business-specific legal details, POPIA retention/privacy controls and South African legal/accounting review.
+- Verify backup and restore, full access controls, mobile usability, physical-device APK behaviour and complete end-to-end workflows.
+- Configure APK signing before production distribution.
 
-Do not treat any feature as production-ready solely because its interface or database table exists. Each workflow must be tested end-to-end with test accounts and test records before launch.
+### Owner-supplied details and decisions
+- Registered/legal business name, business address and Information Officer details.
+- Retention periods and privacy contact.
+- Final payment provider and correct merchant account (do not assume PayGate or Yoco is configured).
+- Resend API key, verified sender domain and sender address.
+- Real product catalogue, approved photographs, prices, stock and fulfilment terms.
+- Historical creation records, photos and accurate creation metadata.
+- Approved cancellation, returns, refunds, repairs and warranty policies.
+
