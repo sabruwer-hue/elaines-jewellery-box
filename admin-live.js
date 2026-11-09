@@ -23,8 +23,90 @@ async function notifyNewArrival(product,button,status){
  status.textContent="Campaign complete · "+result.sent+" sent · "+result.failed+" failed · "+result.recipients+" opted-in customers.";
  }catch(error){status.textContent=error.message||"Campaign failed.";}finally{button.disabled=false;}
 }
-async function loadProducts(){const box=$("productQueue"),select=$("productCategory");if(!box)return;const [{data:products,error},{data:categories},{count:subscriberCount},{data:campaigns}]=await Promise.all([adminSupabase.from("products").select("*").order("created_at",{ascending:false}),adminSupabase.from("categories").select("id,name").eq("is_active",true).order("sort_order"),adminSupabase.from("customer_marketing_subscriptions").select("id",{count:"exact",head:true}).eq("is_active",true),adminSupabase.from("customer_new_arrival_campaigns").select("product_name,recipient_count,sent_count,failed_count,created_at").order("created_at",{ascending:false}).limit(5)]);const countBox=$("arrivalSubscriberCount");if(countBox)countBox.textContent=(subscriberCount??"—")+" active customers opted in to new-arrival emails.";const history=$("arrivalCampaignHistory");if(history){history.innerHTML="";if(!campaigns?.length)history.append(node("p","No new-arrival campaigns sent yet.","empty"));else campaigns.forEach(c=>history.append(node("p",c.product_name+" · "+c.sent_count+"/"+c.recipient_count+" sent · "+new Date(c.created_at).toLocaleDateString("en-ZA"),"campaign-history-row")));}box.innerHTML="";if(error){box.append(node("p","Unable to load products."));return;}if(select){select.innerHTML="<option value=\"\">No category</option>";(categories||[]).forEach(cat=>{const o=node("option",cat.name);o.value=cat.id;select.append(o);});}if(!products?.length){box.append(node("p","No products added yet.","empty"));return;}products.forEach(p=>{const el=card(p.name,p.description||"No description · "+(p.is_published?"Published":"Draft"));el.append(node("small",p.is_published?"Published":"Draft"));if(p.is_published){const status=node("small","Send a new-arrival email to opted-in customers.");const button=node("button","Notify opted-in customers","primary");button.type="button";button.addEventListener("click",()=>notifyNewArrival(p,button,status));el.append(button,status);}box.append(el);});}
-$("productForm")?.addEventListener("submit",async event=>{event.preventDefault();const form=event.currentTarget,button=form.querySelector("button");button.disabled=true;showMessage("productStatus","Saving product…");const v=Object.fromEntries(new FormData(form));const {data:product,error}=await adminSupabase.from("products").insert({name:v.name,slug:v.name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+"-"+Math.random().toString(36).slice(2,6),description:v.description||null,category_id:v.category_id||null,is_published:false}).select("id").single();if(error){showMessage("productStatus","Could not save product: "+error.message);button.disabled=false;return;}const {error:variantError}=await adminSupabase.from("product_variants").insert({product_id:product.id,sku:v.sku,price_minor:Math.round(Number(v.price)*100),stock_on_hand:Number(v.stock),variant_name:"Default"});if(variantError){showMessage("productStatus","Product saved as a draft, but its stock/price variant failed: "+variantError.message);button.disabled=false;await loadProducts();return;}if(v.is_published==="on"){const {error:publishError}=await adminSupabase.from("products").update({is_published:true}).eq("id",product.id);if(publishError){showMessage("productStatus","Product saved as draft; publishing failed: "+publishError.message);button.disabled=false;await loadProducts();return;}}form.reset();showMessage("productStatus","Product saved successfully.");button.disabled=false;await loadProducts();});
+async function loadProducts(){
+ const box=$("productQueue"),select=$("productCategory");if(!box)return;
+ const [{data:products,error},{data:categories},{count:subscriberCount},{data:campaigns}]=await Promise.all([
+  adminSupabase.from("products").select("*,product_variants(id,sku,price_minor,stock_on_hand,variant_name,is_active),product_images(id,storage_path,alt_text,sort_order)").order("created_at",{ascending:false}),
+  adminSupabase.from("categories").select("id,name").eq("is_active",true).order("sort_order"),
+  adminSupabase.from("customer_marketing_subscriptions").select("id",{count:"exact",head:true}).eq("is_active",true),
+  adminSupabase.from("customer_new_arrival_campaigns").select("product_name,recipient_count,sent_count,failed_count,created_at").order("created_at",{ascending:false}).limit(5)
+ ]);
+ const countBox=$("arrivalSubscriberCount");if(countBox)countBox.textContent=(subscriberCount??"—")+" active customers opted in to new-arrival emails.";
+ const history=$("arrivalCampaignHistory");if(history){history.innerHTML="";if(!campaigns?.length)history.append(node("p","No new-arrival campaigns sent yet.","empty"));else campaigns.forEach(c=>history.append(node("p",c.product_name+" · "+c.sent_count+"/"+c.recipient_count+" sent · "+new Date(c.created_at).toLocaleDateString("en-ZA"),"campaign-history-row")));}
+ box.innerHTML="";if(error){box.append(node("p","Unable to load products."));return;}
+ if(select){select.innerHTML="<option value=\"\">No category</option>";(categories||[]).forEach(cat=>{const o=node("option",cat.name);o.value=cat.id;select.append(o);});}
+ if(!products?.length){box.append(node("p","No products added yet.","empty"));return;}
+ for(const p of products){
+  const item=card(p.name,p.description||"No description · "+(p.is_published?"Published":"Draft"));
+  const variants=p.product_variants||[],variant=variants.find(v=>v.is_active)||variants[0];
+  const photos=(p.product_images||[]).sort((a,b)=>a.sort_order-b.sort_order);
+  item.append(node("small",(p.is_published?"Published":"Draft")+" · "+(variant?.stock_on_hand??0)+" in stock · "+photos.length+" photo(s)"));
+  if(photos[0]){
+   const {data:signed}=await adminSupabase.storage.from("ebj-product-images").createSignedUrl(photos[0].storage_path,3600);
+   if(signed?.signedUrl){const img=document.createElement("img");img.src=signed.signedUrl;img.alt=photos[0].alt_text||p.name;img.loading="lazy";img.style.maxWidth="120px";img.style.maxHeight="100px";img.style.objectFit="cover";item.prepend(img);}
+  }
+  const edit=node("button","Edit details","outline");edit.type="button";edit.addEventListener("click",async()=>{
+   const name=prompt("Product name",p.name);if(name===null)return;if(name.trim().length<2)return alert("Enter a product name.");
+   const description=prompt("Product description",p.description||"");if(description===null)return;
+   const slug=name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+"-"+p.id.slice(0,6);
+   const {error}=await adminSupabase.from("products").update({name:name.trim(),slug,description:description.trim()||null,updated_at:new Date().toISOString()}).eq("id",p.id);
+   if(error)alert("Product update failed: "+error.message);else await loadProducts();
+  });
+  const stock=node("button","Edit price / stock","outline");stock.type="button";stock.addEventListener("click",async()=>{
+   const sku=variant?.sku||prompt("SKU for this product","SKU-"+p.id.slice(0,8).toUpperCase());if(!sku)return;
+   const price=prompt("Price in rand",variant?(Number(variant.price_minor)/100).toFixed(2):"0.00");if(price===null)return;
+   const quantity=prompt("Stock quantity",String(variant?.stock_on_hand??0));if(quantity===null)return;
+   const priceNumber=Number(price),stockNumber=Number(quantity);
+   if(!Number.isFinite(priceNumber)||priceNumber<0||!Number.isInteger(stockNumber)||stockNumber<0)return alert("Enter a valid non-negative price and whole-number stock quantity.");
+   const payload={sku,price_minor:Math.round(priceNumber*100),stock_on_hand:stockNumber,variant_name:variant?.variant_name||"Default"};
+   const result=variant?await adminSupabase.from("product_variants").update(payload).eq("id",variant.id):await adminSupabase.from("product_variants").insert({...payload,product_id:p.id});
+   if(result.error)alert("Price/stock update failed: "+result.error.message);else await loadProducts();
+  });
+  const publish=node("button",p.is_published?"Unpublish":"Publish","outline");publish.type="button";publish.addEventListener("click",async()=>{
+   const {error}=await adminSupabase.from("products").update({is_published:!p.is_published,updated_at:new Date().toISOString()}).eq("id",p.id);
+   if(error)alert("Publishing status could not be changed: "+error.message);else await loadProducts();
+  });
+  item.append(edit,stock,publish);
+  if(p.is_published){const status=node("small","Send a new-arrival email to opted-in customers.");const button=node("button","Notify opted-in customers","primary");button.type="button";button.addEventListener("click",()=>notifyNewArrival(p,button,status));item.append(button,status);}
+  box.append(item);
+ }
+}
+$("productForm")?.addEventListener("submit",async event=>{
+ event.preventDefault();const form=event.currentTarget,button=form.querySelector("button[type=submit]");button.disabled=true;showMessage("productStatus","Saving product and photographs…");
+ const v=Object.fromEntries(new FormData(form));const slug=v.name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")+"-"+Math.random().toString(36).slice(2,6);
+ let uploaded=[];
+ try{
+  const {data:product,error}=await adminSupabase.from("products").insert({name:v.name.trim(),slug,description:v.description||null,category_id:v.category_id||null,is_published:false}).select("id").single();
+  if(error)throw error;
+  const {error:variantError}=await adminSupabase.from("product_variants").insert({product_id:product.id,sku:v.sku,price_minor:Math.round(Number(v.price)*100),stock_on_hand:Number(v.stock),variant_name:"Default"});
+  if(variantError)throw variantError;
+  const files=Array.from(form.elements.images?.files||[]);
+  for(let i=0;i<files.length;i++){
+   const file=files[i];if(!["image/jpeg","image/png","image/webp"].includes(file.type))throw new Error(file.name+": use JPG, PNG or WebP images only.");
+   if(file.size>8*1024*1024)throw new Error(file.name+": maximum file size is 8 MB.");
+   const ext=file.type==="image/jpeg"?"jpg":file.type==="image/png"?"png":"webp",storagePath=product.id+"/"+crypto.randomUUID()+"."+ext;
+   const {error:uploadError}=await adminSupabase.storage.from("ebj-product-images").upload(storagePath,file,{upsert:false,contentType:file.type});
+   if(uploadError)throw uploadError;uploaded.push(storagePath);
+   const {error:imageError}=await adminSupabase.from("product_images").insert({product_id:product.id,storage_path:storagePath,alt_text:v.name.trim(),sort_order:i});
+   if(imageError)throw imageError;
+  }
+  if(v.is_published==="on"){
+   const {error:publishError}=await adminSupabase.from("products").update({is_published:true,updated_at:new Date().toISOString()}).eq("id",product.id);
+   if(publishError)throw publishError;
+  }
+  form.reset();showMessage("productStatus","Product saved successfully"+(uploaded.length?" with "+uploaded.length+" photograph(s).":"."));await loadProducts();
+ }catch(error){
+  if(uploaded.length){const {error:cleanupError}=await adminSupabase.storage.from("ebj-product-images").remove(uploaded);if(cleanupError)console.error("Product image cleanup failed:",cleanupError);}
+  showMessage("productStatus","Product remains a draft or was not fully saved: "+(error.message||"Please try again."));
+ }finally{button.disabled=false;}
+});
+$("categoryForm")?.addEventListener("submit",async event=>{
+ event.preventDefault();const form=event.currentTarget,button=form.querySelector("button[type=submit]"),v=Object.fromEntries(new FormData(form));button.disabled=true;showMessage("categoryStatus","Adding category…");
+ const name=v.name.trim(),slug=name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+ const {error}=await adminSupabase.from("categories").insert({name,slug,is_active:true});
+ if(error)showMessage("categoryStatus","Category could not be added: "+error.message);else{form.reset();showMessage("categoryStatus","Category added.");await loadProducts();}
+ button.disabled=false;
+});
 async function loadOrders(){const box=$("orderQueue");if(!box)return;const {data,error}=await adminSupabase.from("orders").select("id,order_reference,customer_name,customer_email,total_amount_minor,payment_status,order_status,created_at").order("created_at",{ascending:false}).limit(100);box.innerHTML="";if(error){box.append(node("p","Unable to load orders."));return;}if(!data.length){box.append(node("p","No shop orders yet.","empty"));return;}data.forEach(item=>{const el=card(item.order_reference+" · "+item.customer_name,money(item.total_amount_minor)+" · "+item.payment_status+"\n"+item.customer_email);el.append(node("small",item.order_status+" · "+new Date(item.created_at).toLocaleString("en-ZA")));box.append(el);});}
 async function loadAnnouncements(){const box=$("announcementQueue");if(!box)return;const {data,error}=await adminSupabase.from("business_announcements").select("*").order("created_at",{ascending:false}).limit(50);box.innerHTML="";if(error){box.append(node("p","Unable to load announcements."));return;}if(!data.length){box.append(node("p","No announcements yet.","empty"));return;}data.forEach(item=>{const el=card(item.title,item.body);el.append(node("small",item.is_published?"Published":"Draft"));box.append(el);});}
 $("announcementForm")?.addEventListener("submit",async event=>{event.preventDefault();const form=event.currentTarget,button=form.querySelector("button");button.disabled=true;showMessage("announcementStatus","Saving…");const v=Object.fromEntries(new FormData(form));const publish=v.is_published==="on";const {data:{user}}=await adminSupabase.auth.getUser();const {error}=await adminSupabase.from("business_announcements").insert({title:v.title,body:v.body,is_published:publish,published_at:publish?new Date().toISOString():null,created_by:user.id});if(error)showMessage("announcementStatus","Save failed: "+error.message);else{form.reset();showMessage("announcementStatus","Announcement saved.");await loadAnnouncements();}button.disabled=false;});
