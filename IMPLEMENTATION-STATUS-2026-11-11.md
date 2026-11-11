@@ -24,7 +24,7 @@
 ### Yoco Checkout API foundation
 - Deployed `yoco-checkout` (v3): validates a hashed invoice payment token, computes the amount from the invoice and quote deposit in the database, reuses pending sessions, creates the checkout server-side and redirects to Yoco's hosted secure payment page.
 - Deployed `yoco-webhook` (v2): verifies Yoco's Standard Webhooks HMAC signature using the raw body, checks the signed timestamp against a 3-minute replay window, deduplicates event IDs and applies payment changes through a transactional database function.
-- Added `checkout_sessions`, `payment_webhook_events`, `integration_events`, and order/payment status history support.
+- Added `checkout_sessions`, `payment_webhook_events`, `integration_events`, and order/payment status history support. A partial unique index prevents multiple active checkouts for one invoice.
 - Added a noindex `payment-result.html` return page. It explicitly says that browser return is not proof of payment.
 - Checkout intentionally refuses to start unless both `YOCO_SECRET_KEY` and `YOCO_WEBHOOK_SECRET` are configured. This prevents accepting card payments without verified webhook confirmation.
 - Refund API and automated refund webhooks are not yet integrated into the storefront/admin workflow; refunds remain a manual Yoco App process until a dedicated approved refund workflow is implemented.
