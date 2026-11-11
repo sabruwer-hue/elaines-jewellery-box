@@ -164,3 +164,21 @@ Do not guess or invent these details:
 ## Safe go-live rule
 
 The website may remain publicly viewable while the shop is clearly marked as a catalogue/enquiry experience. Do not enable live checkout or accept online payments until the relevant payment, customer-data, privacy, email, backup and end-to-end controls are verified.
+
+ 
+## Reconciliation — 11 November 2026
+- [x] Added Elaine's Designer Studio page and AI concept-generation backend for jewellery, furniture, creative décor and restoration/redesign.
+- [x] Added private design-preview storage and owner/admin-only signed-preview access from the admin Studio queue.
+- [x] Added Designer Studio consent timestamp on quotation enquiry submission.
+- [x] Updated public and private Geranemo instructions to recognise Designer Studio and distinguish concepts from orders/manufacturing specifications.
+- [x] Updated public-intake to v18, public Geranemo to v6, private Geranemo to v3, and Yoco webhook to v4.
+- [x] Fixed Yoco webhook error-handler variable scoping.
+- [ ] Verify public Geranemo live AI responses and manager handover.
+- [ ] Verify private admin Geranemo live AI response.
+- [ ] Verify Designer Studio image generation, saved enquiry and staff-only preview access on the live domain.
+- [ ] Complete Yoco sandbox payment and signed-webhook test before any live payment.
+- [ ] Populate real products, product images, Creation Archive records and actual prices/stock.
+- [ ] Complete legal identity, Information Officer, retention schedule and POPIA review.
+- [ ] Set and implement retention/deletion for generated private Designer Studio previews; signed links expire, but stored files remain until deleted.
+- [ ] Enable leaked-password protection and review remaining database advisor findings.
+- [ ] Decide and document whether all genuine customer reviews publish immediately or remain moderated.
