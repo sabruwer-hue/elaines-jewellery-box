@@ -86,7 +86,7 @@ jobs:
           values = res / "values"
           values.mkdir(parents=True, exist_ok=True)
           (values / "ic_launcher_background.xml").write_text(
-              '<resources><color name="ebj_admin_launcher_background">#090909</color></resources>\\n',
+              '<resources><color name="ebj_admin_launcher_background">#090909</color></resources>\n',
               encoding="utf-8"
           )
           adaptive = res / "mipmap-anydpi-v26"
