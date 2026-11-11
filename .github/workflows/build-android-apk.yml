@@ -5,6 +5,14 @@ on:
     branches: [main]
     paths:
       - 'index.html'
+      - 'designer-studio.html'
+      - 'designer-studio.js'
+      - 'archive.html'
+      - 'archive.css'
+      - 'archive.js'
+      - 'privacy.html'
+      - 'terms.html'
+      - 'payment-result.html'
       - 'styles.css'
       - 'app.js'
       - 'manifest.webmanifest'
@@ -32,7 +40,8 @@ jobs:
       - name: Prepare web assets
         run: |
           mkdir -p www/icons
-          cp index.html styles.css app.js manifest.webmanifest sw.js elaines-jewellery-box-logo.png elaines-jewellery-box-icon.png www/
+          cp index.html styles.css app.js manifest.webmanifest sw.js designer-studio.html designer-studio.js archive.html archive.css archive.js privacy.html terms.html payment-result.html elaines-jewellery-box-logo.png elaines-jewellery-box-icon.png www/
+          cp -R icons assets www/
       - name: Generate Android project
         run: npx cap add android
       - name: Sync Capacitor assets
