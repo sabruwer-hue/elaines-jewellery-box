@@ -252,3 +252,32 @@ async function sendGeranemoMessage(raw){
 }
 $("geranemoForm")?.addEventListener("submit",event=>{event.preventDefault();sendGeranemoMessage($("geranemoInput")?.value);});
 document.querySelectorAll("[data-geranemo-prompt]").forEach(button=>button.addEventListener("click",()=>sendGeranemoMessage(button.dataset.geranemoPrompt)));
+
+const adminDesignForm=$("adminDesignForm"),adminDesignResult=$("adminDesignResult"),adminDesignImage=$("adminDesignImage"),adminDesignSaveForm=$("adminDesignSaveForm");
+adminDesignForm?.addEventListener("submit",async event=>{
+ event.preventDefault();const button=adminDesignForm.querySelector('button[type="submit"]');button.disabled=true;showMessage("adminDesignStatus","Creating your design concept…");
+ try{
+  const v=Object.fromEntries(new FormData(adminDesignForm));
+  const response=await fetch("https://jakcqdeyvbbgdwctomdu.supabase.co/functions/v1/geranemo-public",{method:"POST",headers:{"Content-Type":"application/json","apikey":"sb_publishable_-fWvxeQlGA1ocIVgxWguaA_5MUUo67-"},body:JSON.stringify({action:"design",...v})});
+  const result=await response.json().catch(()=>({}));if(!response.ok||!result.preview_path)throw new Error(result.error||"Design generation failed.");
+  adminDesignImage.src=result.preview_url;adminDesignResult.hidden=false;
+  adminDesignSaveForm.elements.preview_path.value=result.preview_path;
+  adminDesignSaveForm.elements.name.value=v.item;
+  adminDesignSaveForm.elements.sku.value="DES-"+crypto.randomUUID().slice(0,8).toUpperCase();
+  adminDesignSaveForm.elements.description.value=[v.details,v.style&&"Style: "+v.style,v.materials&&"Materials: "+v.materials].filter(Boolean).join("\n\n");
+  showMessage("adminDesignStatus","Concept generated. Complete the product details below to save it as a draft.");
+  adminDesignResult.scrollIntoView({behavior:"smooth",block:"start"});
+ }catch(error){showMessage("adminDesignStatus",error.message||"Could not generate concept.");}
+ finally{button.disabled=false;}
+});
+adminDesignSaveForm?.addEventListener("submit",async event=>{
+ event.preventDefault();const button=adminDesignSaveForm.querySelector('button[type="submit"]');button.disabled=true;showMessage("adminDesignSaveStatus","Saving unpublished product draft…");
+ try{
+  const {data:{session}}=await adminSupabase.auth.getSession();if(!session?.access_token)throw new Error("Please sign in again.");
+  const v=Object.fromEntries(new FormData(adminDesignSaveForm));
+  const response=await fetch("https://jakcqdeyvbbgdwctomdu.supabase.co/functions/v1/geranemo-public",{method:"POST",headers:{"Content-Type":"application/json","apikey":"sb_publishable_-fWvxeQlGA1ocIVgxWguaA_5MUUo67-","Authorization":"Bearer "+session.access_token},body:JSON.stringify({action:"admin_save_design",...v})});
+  const result=await response.json().catch(()=>({}));if(!response.ok||!result.ok)throw new Error(result.error||"Could not save product draft.");
+  showMessage("adminDesignSaveStatus",result.message+" Product ID: "+result.product_id);await loadProducts();
+ }catch(error){showMessage("adminDesignSaveStatus",error.message||"Could not save product draft.");}
+ finally{button.disabled=false;}
+});
