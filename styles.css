@@ -168,3 +168,18 @@ input[type="reset"] {
 .geranemo-pending{margin:0 16px 12px;font:11px Arial,sans-serif;color:#756642}
 @media(max-width:520px){.geranemo-launcher{right:14px;bottom:14px}.geranemo-panel{right:8px;bottom:76px;width:calc(100vw - 16px);max-height:calc(100dvh - 94px)}.geranemo-messages{max-height:25dvh}.geranemo-handoff{max-height:33dvh}.geranemo-manager-actions{align-items:flex-start;flex-direction:column}}
 @media(prefers-reduced-motion:reduce){.geranemo-panel *{scroll-behavior:auto!important}}
+
+/* Rounded, consistent controls across the customer website and its Android WebView build. */
+button,input[type="button"],input[type="submit"],input[type="reset"],a.button,.nav-cta{border-radius:999px!important}
+button,.button{min-height:44px}
+.donation-section{padding:70px clamp(24px,8vw,110px);background:#e9dfc9;color:#17130a}
+.donation-inner{max-width:780px;margin:auto}
+.donation-inner h2{font-size:clamp(32px,5vw,48px);font-weight:normal;margin:10px 0}
+.donation-inner>p:not(.eyebrow){font:14px/1.7 Arial,sans-serif;max-width:650px}
+.donation-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:25px;padding:24px;background:#fffdf8;border:1px solid #d3c39e}
+.donation-form label{display:grid;gap:7px;font:12px Arial,sans-serif}
+.donation-form input,.donation-form select,.donation-form textarea{width:100%;min-width:0;padding:13px;border:1px solid #cfc2a7;background:white;color:#17130a;font:14px Arial,sans-serif}
+.donation-form textarea{min-height:76px}
+.donation-form button,.donation-form .form-note{grid-column:1/-1}
+.footer-support{display:flex;gap:10px;flex-wrap:wrap}
+@media(max-width:600px){.donation-form{grid-template-columns:1fr;padding:18px}.donation-form button,.donation-form .form-note{grid-column:auto}.footer-support{width:100%}}
