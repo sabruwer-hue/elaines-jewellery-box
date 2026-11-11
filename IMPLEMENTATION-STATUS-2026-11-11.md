@@ -68,3 +68,16 @@
 
 ## Release position
 The Archive basket and quote/order conversion path are implemented. The payment integration is deployed but deliberately gated until the merchant credentials and signed webhook are configured and sandbox tests pass. Do not advertise live online payment availability yet.
+
+ 
+## Addendum — 11 November 2026: Geranemo, Designer Studio and payment audit
+- Added the public `Designer Studio` page and client workflow for jewellery, furniture, creative objects/décor, and restoration/redesign concepts.
+- Added AI image generation through `geranemo-public` v5, private preview storage, explicit consent for quotation submission, and preview path capture in Studio enquiries.
+- Added a staff-only signed-preview route in `geranemo-public` and a View private AI preview action in the admin Studio queue.
+- Updated the public Geranemo knowledge base to explain Designer Studio and the difference between a concept and an order.
+- Updated the homepage navigation/CTA, sitemap, PWA cache and privacy notice.
+- Updated `public-intake` to v18 to capture Designer Studio consent timestamps.
+- Fixed the Yoco webhook error-handler variable-scope defect; deployed `yoco-webhook` v4.
+- GitHub Pages CI syntax-check passed on the initial Designer Studio implementation commit. Later follow-on commits have their own deployment runs.
+- **Not yet certified:** live AI responses, image-generation availability, manager handover submission, admin preview signing, Yoco sandbox payment, live custom-domain/browser journey.
+- **Outstanding launch work:** populate products and archive, complete legal/privacy placeholders and retention rules, resolve Supabase Auth leaked-password warning, review 11 multiple-policy and 63 unused-index findings, and run end-to-end acceptance tests.
