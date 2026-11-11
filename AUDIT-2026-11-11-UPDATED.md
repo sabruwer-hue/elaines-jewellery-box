@@ -12,7 +12,7 @@ Reviewed the current public website source, Designer Studio page and client scri
 The execution environment could not resolve/fetch the custom domain or Supabase HTTP endpoints. Therefore this audit confirms deployed code/configuration and CI status, but does **not** prove that a real browser session, OpenAI request, manager handover, quotation, email or payment completed successfully. No real payment or customer enquiry was created for testing. Secret values were not read or exposed.
 
 ## 2. Current deployed Supabase functions
-All eight functions below were reported ACTIVE at the time of this audit.
+All seven functions below were reported ACTIVE at the time of this audit.
 
 | Function | Version | JWT verification | Purpose / status |
 |---|---:|---|---|
@@ -23,7 +23,6 @@ All eight functions below were reported ACTIVE at the time of this audit.
 | `yoco-checkout` | 5 | Disabled | Server-side hosted checkout creation |
 | `yoco-webhook` | 4 | Disabled | Signed Yoco payment event verification and processing |
 | `send-business-email` | 3 | Required | Authenticated business email workflow |
-| — | — | — | No additional function was listed in the current inventory |
 
 Public functions use server-side validation and service-role access where required. CORS origin allowlisting is not treated as authentication. The public assistant is rate-limited and does not receive private admin records.
 
