@@ -1,8 +1,8 @@
 {
   "id": "/",
   "name": "Elaine’s Jewellery Box",
-  "short_name": "Elaine’s Jewellery Box",
-  "description": "Handmade jewellery, personalised creations and creative transformations through Second Life Studio. The dream creation you want is a click away.",
+  "short_name": "Elaine’s",
+  "description": "Handmade jewellery, personalised creations and creative transformations through Second Life Studio.",
   "lang": "en-ZA",
   "start_url": "./?source=pwa",
   "scope": "./",
@@ -12,9 +12,9 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "icons/icon.svg",
+      "src": "/elaines-jewellery-box-icon.png",
       "sizes": "any",
-      "type": "image/svg+xml",
+      "type": "image/png",
       "purpose": "any maskable"
     }
   ]
