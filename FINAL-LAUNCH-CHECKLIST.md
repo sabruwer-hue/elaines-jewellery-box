@@ -1,6 +1,6 @@
 # Elaine's Jewellery Box — master completion and launch checklist
 
-Last reconciled against the repository and connected Supabase project: 9 November 2026.
+Last reconciled against the repository and connected Supabase project: 11 November 2026.
 
 This is the working checklist. Status labels distinguish deployed foundations from completed, tested customer workflows. Do not mark a workflow complete merely because a screen, table or function exists.
 
@@ -11,7 +11,7 @@ This is the working checklist. Status labels distinguish deployed foundations fr
 - [x] PWA manifest, service worker and public icon artwork.
 - [x] Supabase project active and healthy.
 - [x] Supabase Auth owner/admin sign-in with active staff roster checks.
-- [x] Public intake Edge Function deployed (version 10).
+- [x] Public intake Edge Function deployed (version 18).
 - [x] Persistent public-intake rate limiting using hashed IP identifiers.
 - [x] Creation Archive schema, permanent category-based codes and immutable-code trigger.
 - [x] Archive owner/admin management page and public search/detail/enquiry page.
@@ -55,7 +55,7 @@ This is the working checklist. Status labels distinguish deployed foundations fr
 - [ ] Confirm collection, delivery, shipping fees and service areas.
 - [ ] Implement cart and secure checkout.
 - [ ] Decide whether customer accounts are required; if so, implement registration, login, order history and account recovery.
-- [ ] Confirm the payment provider (PayGate, Yoco or another provider) and correct merchant account before integration.
+- [ ] Confirm Yoco merchant account, domain verification and sandbox/live credentials before real customer payments.
 - [ ] Implement hosted/tokenised payment initiation, signed server-side callbacks, payment reconciliation, cancellation, failed payment and refunds.
 - [ ] Implement order confirmation, fulfilment status, delivery/collection confirmation and customer notifications.
 - [ ] Add a verified WhatsApp contact/order route if Elaine wants WhatsApp ordering.
@@ -85,7 +85,7 @@ This is the working checklist. Status labels distinguish deployed foundations fr
 - [x] Invoice draft creation linked to eligible orders or accepted Studio quotes.
 - [x] Invoice printing and manual payment verification foundation.
 - [ ] Implement customer reference-photo upload and private attachment viewing.
-- [ ] Add design concept generation with clear AI-illustrative labels and owner approval.
+- [x] Add first AI design-concept generation workflow with clear illustrative-only labels, private preview storage and owner/admin review path. Live customer testing remains pending.
 - [ ] Confirm Resend API key, verified sender domain and sender address; test delivery and replies.
 - [ ] Run a real end-to-end Studio enquiry → owner acceptance → quote → customer response → invoice → payment verification test.
 - [ ] Add a complete fulfilment roadmap to every invoice.
@@ -136,7 +136,7 @@ This is the working checklist. Status labels distinguish deployed foundations fr
 
 ## I. Real-world testing and release
 
-- [x] Latest verified Pages deployment succeeded (run #148).
+- [x] Initial Designer Studio Pages deployment succeeded (run #247); follow-on code commits #248–#251 also succeeded. Latest documentation commits are still publishing.
 - [x] Android admin debug APK build #38 succeeded.
 - [ ] Test the live website on Android and desktop browsers.
 - [ ] Test PWA install/update/offline behaviour.
