@@ -157,3 +157,17 @@ processNewArrivalUnsubscribe();
   });
   addMessage("assistant", "Hello! I’m Geranemo, Elaine’s Jewellery Box assistant. I can help you explore the shop, answer questions using published information, or help you reach the manager if something needs attention. How can I help?");
 })();
+
+const donationForm=document.getElementById("donationForm");
+const customDonationWrap=document.getElementById("customDonationWrap");
+donationForm?.elements.preset?.addEventListener("change",()=>{customDonationWrap.hidden=donationForm.elements.preset.value!=="custom";});
+donationForm?.addEventListener("submit",async event=>{
+ event.preventDefault();const button=donationForm.querySelector('button[type="submit"]');button.disabled=true;
+ const status=document.getElementById("donationStatus");status.textContent="Preparing secure Yoco checkout…";
+ try{
+  const v=Object.fromEntries(new FormData(donationForm));const amount=v.preset==="custom"?Number(v.custom_amount):Number(v.preset);
+  const response=await fetch("https://jakcqdeyvbbgdwctomdu.supabase.co/functions/v1/donation-checkout",{method:"POST",headers:{"Content-Type":"application/json","apikey":SUPABASE_PUBLIC_KEY},body:JSON.stringify({...v,amount})});
+  const result=await response.json().catch(()=>({}));if(!response.ok||!result.redirectUrl)throw new Error(result.error||"Donation checkout could not be started.");
+  status.textContent="Opening secure Yoco checkout · reference "+result.reference;location.href=result.redirectUrl;
+ }catch(error){status.textContent=error.message||"Donation checkout could not be started.";button.disabled=false;}
+});
