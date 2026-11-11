@@ -139,3 +139,18 @@ The Second Life Studio enquiry and quotation foundations exist, including quote 
 **Designer Studio:** first working implementation committed and backend deployed; live generation and enquiry journey still require testing.  
 **Payments:** a webhook code defect has been fixed, but live/sandbox payment acceptance is not certified.  
 **Business launch readiness:** not ready for a full public sales launch until real catalogue/archive data, legal details, credentials, end-to-end tests and retention rules are completed.
+
+ 
+## Addendum — 11 November 2026: Admin Designer Studio, donations and Android parity
+- Added a private Designer Studio view to the admin portal. Active owner/admin staff can generate concepts for jewellery, furniture, décor and restoration/redesign.
+- Added a staff-authenticated save action that copies the private AI concept into the product-image bucket and creates an unpublished product, default variant/SKU, price, stock and image record. The staff member must review and publish manually.
+- Added a public voluntary donation form with preset/custom amounts (R10–R50,000), optional donor name/email/message, Yoco hosted checkout and a dedicated donations table.
+- Added a signed Yoco webhook branch for donation confirmation, matching donation reference, amount and currency; donations are not treated as successful on the browser return alone.
+- Added owner/admin-only donation ledger visibility through RLS.
+- Added a Help & Support footer action linking to the customer-care form. No public phone number was supplied, so no call-to-phone hotline is claimed.
+- Customer APK workflow now packages the actual public pages (home, Designer Studio, Creation Archive, privacy, terms, payment result), common CSS, scripts, icons and assets rather than only the homepage shell. Global customer buttons are rounded in the shared stylesheet.
+- Admin APK rebuild includes the admin Designer Studio interface.
+- Fixed GitHub Pages deployment file list to include Designer Studio and donation payment result pages, and to syntax-check the Designer Studio script.
+- Current deployed Supabase functions after these changes: `geranemo-public v7`, `yoco-webhook v6`, `donation-checkout v1`; all reported ACTIVE.
+- **Not yet verified:** actual Yoco donation payment and webhook delivery; OpenAI image-generation request from admin; live customer website rendering; physical Android device rendering and touch testing; release APK signing.
+- Customer and admin APKs are debug builds. A rebuilt APK is a snapshot; installed APKs do not silently inherit website updates.
