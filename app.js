@@ -83,7 +83,7 @@ processNewArrivalUnsubscribe();
     const categoryField = handoffForm.querySelector('select[name="category"]');
     const customerMessages = history.filter(item => item.role === "user").slice(-5).map(item => item.content);
     if (summaryField && !summaryField.value.trim() && customerMessages.length) {
-      summaryField.value = "Conversation summary from Geranemo:\\n\\n" + customerMessages.join("\\n\\n");
+      summaryField.value = "Conversation summary from Geranemo:\n\n" + customerMessages.join("\n\n");
     }
     if (subjectField && !subjectField.value.trim()) subjectField.value = "Manager follow-up requested via Geranemo";
     if (categoryField && customerMessages.some(item => /complain|complaint|problem|issue|unhappy|disappointed/i.test(item))) {
