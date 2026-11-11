@@ -182,3 +182,18 @@ The website may remain publicly viewable while the shop is clearly marked as a c
 - [ ] Set and implement retention/deletion for generated private Designer Studio previews; signed links expire, but stored files remain until deleted.
 - [ ] Enable leaked-password protection and review remaining database advisor findings.
 - [ ] Decide and document whether all genuine customer reviews publish immediately or remain moderated.
+
+ 
+## Reconciliation — 11 November 2026 (admin design, donations and Android)
+- [x] Add Elaine's own Designer Studio to the private admin portal.
+- [x] Save generated designs as unpublished product drafts with their image, SKU, price and stock.
+- [x] Add customer Help & Support button linking to customer-care.
+- [x] Add voluntary Yoco donation flow, donations ledger, webhook confirmation and owner/admin-only ledger access.
+- [x] Package public website pages and shared visual styling in the customer APK build.
+- [x] Add global rounded-button styling to customer website and APK.
+- [x] Include Designer Studio and payment return page in GitHub Pages deployment workflow.
+- [ ] Complete live Yoco sandbox donation payment and webhook test.
+- [ ] Test admin design generation and draft save using a live owner/admin session.
+- [ ] Install the new APK on a physical Android device and compare all key screens with the website.
+- [ ] Configure signed production APK release; current APKs are debug builds.
+- [ ] Confirm a staffed hotline phone number if a tap-to-call button is required; current Help & Support button opens the website support form.
