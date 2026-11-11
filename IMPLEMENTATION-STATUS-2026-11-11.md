@@ -81,7 +81,7 @@ The Archive basket and quote/order conversion path are implemented. The payment 
 - Updated the homepage navigation/CTA, sitemap, PWA cache and privacy notice.
 - Updated `public-intake` to v18 to capture Designer Studio consent timestamps.
 - Fixed the Yoco webhook error-handler variable-scope defect; deployed `yoco-webhook` v4.
-- GitHub Pages CI syntax-check passed on the initial Designer Studio implementation commit. Later follow-on commits have their own deployment runs.
+- GitHub Pages CI and JavaScript syntax-check passed on website-code commits #247–#251 and #259, including the staff-only preview button and its corrected path parser. Later audit/checklist documentation commits are publishing separately.
 - **Not yet certified:** live AI responses, image-generation availability, manager handover submission, admin preview signing, Yoco sandbox payment, live custom-domain/browser journey.
 - **Outstanding launch work:** populate products and archive, complete legal/privacy placeholders and retention rules, resolve Supabase Auth leaked-password warning, review 11 multiple-policy and 63 unused-index findings, and run end-to-end acceptance tests.
 
