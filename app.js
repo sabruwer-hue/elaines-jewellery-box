@@ -35,3 +35,114 @@ async function processNewArrivalUnsubscribe(){
  params.delete("unsubscribe");const clean=location.pathname+(params.toString()?"?"+params.toString():"")+location.hash;history.replaceState({}, "",clean);
 }
 processNewArrivalUnsubscribe();
+
+
+// Geranemo — public boutique assistant and manager-support handover.
+(() => {
+  const endpoint = SUPABASE_URL + "/functions/v1/geranemo-public";
+  const launcher = document.getElementById("geranemoLauncher");
+  const panel = document.getElementById("geranemoPanel");
+  const close = document.getElementById("geranemoClose");
+  const messagesEl = document.getElementById("geranemoMessages");
+  const chatForm = document.getElementById("geranemoChatForm");
+  const input = document.getElementById("geranemoInput");
+  const managerToggle = document.getElementById("geranemoManagerToggle");
+  const handoffForm = document.getElementById("geranemoHandoffForm");
+  const handoffStatus = document.getElementById("geranemoHandoffStatus");
+  if (!launcher || !panel || !messagesEl || !chatForm) return;
+
+  const history = [];
+  let busy = false;
+  const addMessage = (role, content) => {
+    history.push({role, content});
+    const bubble = document.createElement("div");
+    bubble.className = "geranemo-message " + (role === "user" ? "is-user" : "is-assistant");
+    const label = document.createElement("strong");
+    label.textContent = role === "user" ? "You" : "Geranemo";
+    const text = document.createElement("p");
+    text.textContent = content;
+    bubble.append(label, text);
+    messagesEl.append(bubble);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  };
+  const setOpen = (open) => {
+    panel.hidden = !open;
+    launcher.setAttribute("aria-expanded", String(open));
+    if (open) input.focus();
+    else launcher.focus();
+  };
+  const pageContext = () => {
+    const section = location.hash ? document.querySelector(location.hash) : null;
+    const heading = section?.querySelector("h1,h2,h3")?.textContent?.trim() || "";
+    return [document.title, location.pathname, location.hash, heading].filter(Boolean).join(" | ").slice(0,240);
+  };
+  const showHandoff = () => {
+    handoffForm.hidden = false;
+    handoffForm.scrollIntoView({behavior:"smooth",block:"nearest"});
+    handoffForm.querySelector("input")?.focus();
+  };
+  launcher.addEventListener("click", () => setOpen(panel.hidden));
+  close.addEventListener("click", () => setOpen(false));
+  managerToggle.addEventListener("click", showHandoff);
+  chatForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const message = input.value.trim();
+    if (!message || busy) return;
+    const managerIntent = /\b(manager|complain|complaint|supervisor|person in charge|speak to someone|human)\b/i.test(message);
+    addMessage("user", message);
+    input.value = "";
+    busy = true;
+    const button = chatForm.querySelector("button");
+    button.disabled = true;
+    const pending = document.createElement("p");
+    pending.className = "geranemo-pending";
+    pending.textContent = "Geranemo is thinking…";
+    messagesEl.append(pending);
+    try {
+      const response = await fetch(endpoint, {
+        method:"POST",
+        headers:{"Content-Type":"application/json","apikey":SUPABASE_PUBLIC_KEY},
+        body:JSON.stringify({action:"chat",messages:history.slice(-12),page:pageContext()})
+      });
+      const result = await response.json().catch(()=>({}));
+      if (!response.ok) throw new Error(result.error || "Geranemo is temporarily unavailable.");
+      pending.remove();
+      addMessage("assistant", result.reply);
+      if (managerIntent) handoffForm.hidden = false;
+    } catch (error) {
+      pending.remove();
+      addMessage("assistant", error.message || "I’m having trouble connecting. Please use the Customer Care section or email Elaine directly.");
+    } finally {
+      busy = false;
+      button.disabled = false;
+      input.focus();
+    }
+  });
+  handoffForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (busy) return;
+    const values = Object.fromEntries(new FormData(handoffForm).entries());
+    busy = true;
+    const button = handoffForm.querySelector('button[type="submit"]');
+    button.disabled = true;
+    handoffStatus.textContent = "Sending your message securely…";
+    try {
+      const response = await fetch(endpoint, {
+        method:"POST",
+        headers:{"Content-Type":"application/json","apikey":SUPABASE_PUBLIC_KEY},
+        body:JSON.stringify({action:"handoff",...values})
+      });
+      const result = await response.json().catch(()=>({}));
+      if (!response.ok) throw new Error(result.error || "We couldn't send your message.");
+      handoffForm.reset();
+      handoffStatus.textContent = "Received. Your reference is " + result.reference + ". Elaine’s team has been notified for review.";
+      addMessage("assistant", "Thank you. I’ve submitted your request for a human follow-up. Your reference is " + result.reference + ". I can’t make a decision on the team’s behalf, but your message is now recorded.");
+    } catch (error) {
+      handoffStatus.textContent = error.message || "Please use the Customer Care form instead.";
+    } finally {
+      busy = false;
+      button.disabled = false;
+    }
+  });
+  addMessage("assistant", "Hello! I’m Geranemo, Elaine’s Jewellery Box assistant. I can help you explore the shop, answer questions using published information, or help you reach the manager if something needs attention. How can I help?");
+})();
