@@ -35,6 +35,7 @@ async function loadProducts(){
  const history=$("arrivalCampaignHistory");if(history){history.innerHTML="";if(!campaigns?.length)history.append(node("p","No new-arrival campaigns sent yet.","empty"));else campaigns.forEach(c=>history.append(node("p",c.product_name+" · "+c.sent_count+"/"+c.recipient_count+" sent · "+new Date(c.created_at).toLocaleDateString("en-ZA"),"campaign-history-row")));}
  box.innerHTML="";if(error){box.append(node("p","Unable to load products."));return;}
  if(select){select.innerHTML="<option value=\"\">No category</option>";(categories||[]).forEach(cat=>{const o=node("option",cat.name);o.value=cat.id;select.append(o);});}
+ const designCategory=$("adminDesignCategory");if(designCategory){designCategory.innerHTML="<option value=\"\">Choose later / no category</option>";(categories||[]).forEach(cat=>{const o=node("option",cat.name);o.value=cat.id;designCategory.append(o);});}
  if(!products?.length){box.append(node("p","No products added yet.","empty"));return;}
  for(const p of products){
   const item=card(p.name,p.description||"No description · "+(p.is_published?"Published":"Draft"));
