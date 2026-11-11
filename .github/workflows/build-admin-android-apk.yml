@@ -16,6 +16,7 @@ on:
       - 'update-password.html'
       - 'sw.js'
       - 'icons/admin-icon.svg'
+      - 'elaines-admin-portal-icon.png'
       - 'admin-capacitor.config.json'
       - '.github/workflows/build-admin-android-apk.yml'
 permissions:
@@ -38,6 +39,7 @@ jobs:
         run: |
           mkdir -p www/icons
           cp admin.html www/index.html
+          cp elaines-admin-portal-icon.png www/
           cp admin.css admin.js admin-live.js admin-finance.js quotes.js quote.html quote-portal.js admin.webmanifest sw.js update-password.html www/
           cp icons/admin-icon.svg www/icons/
       - name: Select separate admin app configuration
@@ -46,6 +48,58 @@ jobs:
         run: npx cap add android
       - name: Sync Capacitor assets
         run: npx cap sync android
+      - name: Apply uploaded admin artwork to Android launcher icons
+        run: |
+          python3 -m pip install --user Pillow
+          python3 - <<'PY'
+          from PIL import Image, ImageOps
+          from pathlib import Path
+
+          source = Image.open("elaines-admin-portal-icon.png").convert("RGBA")
+          side = min(source.width, source.height)
+          left = (source.width - side) // 2
+          top = (source.height - side) // 2
+          source = source.crop((left, top, left + side, top + side))
+
+          res = Path("android/app/src/main/res")
+          densities = {
+              "mipmap-mdpi": 48,
+              "mipmap-hdpi": 72,
+              "mipmap-xhdpi": 96,
+              "mipmap-xxhdpi": 144,
+              "mipmap-xxxhdpi": 192,
+          }
+          for folder, size in densities.items():
+              target = res / folder
+              target.mkdir(parents=True, exist_ok=True)
+              icon = source.resize((size, size), Image.Resampling.LANCZOS)
+              icon.save(target / "ic_launcher.png", optimize=True)
+              icon.save(target / "ic_launcher_round.png", optimize=True)
+
+          foreground = Image.new("RGBA", (432, 432), (0, 0, 0, 0))
+          art = ImageOps.contain(source, (320, 320), method=Image.Resampling.LANCZOS)
+          foreground.alpha_composite(art, ((432-art.width)//2, (432-art.height)//2))
+          drawable = res / "drawable-nodpi"
+          drawable.mkdir(parents=True, exist_ok=True)
+          foreground.save(drawable / "ic_launcher_foreground.png", optimize=True)
+
+          values = res / "values"
+          values.mkdir(parents=True, exist_ok=True)
+          (values / "ic_launcher_background.xml").write_text(
+              '<resources><color name="ebj_admin_launcher_background">#090909</color></resources>\\n',
+              encoding="utf-8"
+          )
+          adaptive = res / "mipmap-anydpi-v26"
+          adaptive.mkdir(parents=True, exist_ok=True)
+          xml = '''<?xml version="1.0" encoding="utf-8"?>
+          <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
+              <background android:drawable="@color/ebj_admin_launcher_background" />
+              <foreground android:drawable="@drawable/ic_launcher_foreground" />
+          </adaptive-icon>
+          '''
+          (adaptive / "ic_launcher.xml").write_text(xml, encoding="utf-8")
+          (adaptive / "ic_launcher_round.xml").write_text(xml, encoding="utf-8")
+          PY
       - name: Build Android debug APK
         working-directory: android
         run: |
