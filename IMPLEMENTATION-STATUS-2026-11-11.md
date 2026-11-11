@@ -22,8 +22,8 @@
 - Conversion is transactional within PostgreSQL and reuses existing order, order-item and invoice tables. The invoice uses the order as its single source record to respect the existing exactly-one-source constraint.
 
 ### Yoco Checkout API foundation
-- Deployed `yoco-checkout` (v3): validates a hashed invoice payment token, computes the amount from the invoice and quote deposit in the database, reuses pending sessions, creates the checkout server-side and redirects to Yoco's hosted secure payment page.
-- Deployed `yoco-webhook` (v2): verifies Yoco's Standard Webhooks HMAC signature using the raw body, checks the signed timestamp against a 3-minute replay window, deduplicates event IDs and applies payment changes through a transactional database function.
+- Deployed `yoco-checkout` (v5): validates a hashed invoice payment token, computes the amount from the invoice and quote deposit in the database, reuses pending sessions, creates the checkout server-side and redirects to Yoco's hosted secure payment page.
+- Deployed `yoco-webhook` (v4): verifies Yoco's Standard Webhooks HMAC signature using the raw body, checks the signed timestamp against a 3-minute replay window, deduplicates event IDs and applies payment changes through a transactional database function.
 - Added `checkout_sessions`, `payment_webhook_events`, `integration_events`, and order/payment status history support. A partial unique index prevents multiple active checkouts for one invoice.
 - Added a noindex `payment-result.html` return page. It explicitly says that browser return is not proof of payment.
 - Checkout intentionally refuses to start unless both `YOCO_SECRET_KEY` and `YOCO_WEBHOOK_SECRET` are configured. This prevents accepting card payments without verified webhook confirmation.
@@ -34,10 +34,13 @@
 - Reserved a separate learner profile/consent boundary and documented versioned events for future module integration. No career or learner personal data is being collected by the jewellery site.
 
 ## Deployed Supabase Edge Function versions
-- `public-intake`: v16
-- `studio-quote-portal`: v5
-- `yoco-checkout`: v3
-- `yoco-webhook`: v2
+- `public-intake`: v18
+- `studio-quote-portal`: v6
+- `yoco-checkout`: v5
+- `yoco-webhook`: v4
+- `geranemo-assistant`: v3
+- `geranemo-public`: v6
+- `send-business-email`: v3
 
 ## Database foundations and security
 - New internal tables have RLS enabled and explicit deny policies for `anon` and `authenticated`; service-role operations are performed only from Edge Functions.
@@ -61,7 +64,7 @@
 8. Do not paste keys into ChatGPT, GitHub source files or browser code.
 
 ## Not yet certified
-- No Yoco merchant credentials or webhook signing secret were supplied/configured, so live checkout has not been activated or sandbox-tested.
+- Yoco credential values and webhook signing secret were not read or validated in this pass; treat payment configuration as unverified until a sandbox payment and signed webhook test pass.
 - GitHub changes have been committed to `main`, but the live domain deployment was not independently verified from this environment.
 - Full browser/device acceptance tests, payment settlement reconciliation, refund workflow, customer self-service order tracking, private image upload workflow, backup restore test and business/legal policy approval remain outstanding.
 - The quote-to-order and webhook SQL functions have been checked against the current database constraints and privilege grants, but no real customer quote has been accepted to exercise the complete journey.
@@ -72,7 +75,7 @@ The Archive basket and quote/order conversion path are implemented. The payment 
  
 ## Addendum — 11 November 2026: Geranemo, Designer Studio and payment audit
 - Added the public `Designer Studio` page and client workflow for jewellery, furniture, creative objects/décor, and restoration/redesign concepts.
-- Added AI image generation through `geranemo-public` v5, private preview storage, explicit consent for quotation submission, and preview path capture in Studio enquiries.
+- Added AI image generation through `geranemo-public` v6, private preview storage, explicit consent for quotation submission, and preview path capture in Studio enquiries.
 - Added a staff-only signed-preview route in `geranemo-public` and a View private AI preview action in the admin Studio queue.
 - Updated the public Geranemo knowledge base to explain Designer Studio and the difference between a concept and an order.
 - Updated the homepage navigation/CTA, sitemap, PWA cache and privacy notice.
