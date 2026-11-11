@@ -17,7 +17,7 @@ All seven functions below were reported ACTIVE at the time of this audit.
 | Function | Version | JWT verification | Purpose / status |
 |---|---:|---|---|
 | `geranemo-assistant` | 3 | Required | Private admin assistant; verifies user and active owner/admin staff role |
-| `geranemo-public` | 5 | Disabled | Public chat, manager handover, AI design generation and staff-only private-preview signing |
+| `geranemo-public` | 6 | Disabled | Public chat, manager handover, AI design generation and staff-only private-preview signing |
 | `public-intake` | 18 | Disabled | Public forms, studio enquiries and customer-care intake |
 | `studio-quote-portal` | 6 | Disabled | Customer quote view, accept/decline/change response |
 | `yoco-checkout` | 5 | Disabled | Server-side hosted checkout creation |
@@ -70,7 +70,7 @@ Customer flow:
 
 Backend and data:
 - `geranemo-public` uses the OpenAI Responses API image-generation tool.
-- Image-generation requests are separately rate-limited.
+- Image-generation requests have a separate per-IP rate limit (3 per 10 minutes) and use low-quality 1024×1024 draft output to control generation cost.
 - Preview images are stored in the private `studio-design-previews` bucket.
 - The quotation request stores the preview path and time-limited preview URL in `studio_enquiries.customer_vision`.
 - Designer Studio submissions require explicit consent and set `customer_consent_at`.
