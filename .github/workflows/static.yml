@@ -36,6 +36,7 @@ jobs:
           mkdir -p site/icons
           cp index.html styles.css app.js manifest.webmanifest privacy.html terms.html admin.html admin.css admin.js admin-live.js admin-finance.js quotes.js quote.html quote-portal.js admin.webmanifest update-password.html archive.html archive.css archive.js archive-admin.html archive-admin.js sw.js robots.txt sitemap.xml site/
           cp icons/*.svg site/icons/
+          cp elaines-jewellery-box-logo.png elaines-jewellery-box-icon.png site/
           printf '%s\n' 'elainesjewellerybox.co.za' > site/CNAME
           touch site/.nojekyll
       - name: Upload public website artifact
