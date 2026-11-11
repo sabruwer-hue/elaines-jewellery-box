@@ -118,8 +118,8 @@ The Second Life Studio enquiry and quotation foundations exist, including quote 
 - Add retention/cleanup for generated previews and verify storage access policies before launch.
 
 ## 8. Deployment and test status
-- GitHub Pages workflow for the initial Designer Studio commit completed successfully; its JavaScript syntax-check step passed.
-- Follow-on commits added homepage promotion, privacy clarifications, staff preview access and the webhook fix. Their individual workflow runs must complete successfully before the latest full release is considered published.
+- GitHub Pages workflow for the initial Designer Studio commit and follow-on website-code commits #248–#251 and #259 completed successfully; the JavaScript syntax-check step passed on the latest code commit.
+- The latest audit/status/checklist documentation commits have separate Pages workflow runs pending/in progress. They do not change the website code.
 - The custom domain and live API endpoints were inaccessible from this audit environment, so no browser acceptance or runtime API test is claimed.
 
 ## 9. Required next tests before launch
