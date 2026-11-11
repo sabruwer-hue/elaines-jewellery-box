@@ -43,6 +43,7 @@ This is the working checklist. Status labels distinguish deployed foundations fr
 - [ ] Add CAPTCHA or equivalent challenge if spam persists; rate limits are not a substitute for abuse monitoring.
 - [ ] Verify all customer photo uploads use private storage, strict file validation and consent.
 - [ ] Configure and test backups and an actual restore.
+- [ ] Set and implement retention/deletion for generated private Designer Studio previews; signed links expire, but stored files remain until deleted.
 - [ ] Test owner/admin/staff permission boundaries and session recovery.
 - [ ] Complete POPIA retention, access, correction and deletion handling.
 
