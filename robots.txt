@@ -3,3 +3,4 @@ Allow: /
 Disallow: /admin.html
 
 Sitemap: https://elainesjewellerybox.co.za/sitemap.xml
+Sitemap: https://elainesjewellerybox.co.za/image-sitemap.xml
