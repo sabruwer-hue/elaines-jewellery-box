@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://elainesjewellerybox.co.za/</loc>
+    <image:image>
+      <image:loc>https://elainesjewellerybox.co.za/elaines-jewellery-box-logo.png</image:loc>
+      <image:title>Elaine’s Jewellery Box logo</image:title>
+      <image:caption>Official logo for Elaine’s Jewellery Box, a South African handmade jewellery and creative restoration business.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://elainesjewellerybox.co.za/elaines-jewellery-box-icon.png</image:loc>
+      <image:title>Elaine’s Jewellery Box brand icon</image:title>
+    </image:image>
+  </url>
+</urlset>
