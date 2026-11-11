@@ -90,3 +90,9 @@ input[type="reset"] {
 
 /* Temporary Elaine’s Luxury Jewellery Banner identity */
 .brand-logo{width:88px;height:58px;flex:0 0 88px;object-fit:contain}.app-icon{width:90px;height:60px;object-fit:contain;background:#f7f3ea;border:1px solid #c9a44c;padding:3px;border-radius:8px}@media(max-width:800px){.brand-logo{width:82px;height:54px;flex-basis:82px}}
+
+
+/* Larger public brand logo — approximately double the previous display size. */
+.site-header{height:auto;min-height:132px;padding-top:12px;padding-bottom:12px}
+.site-header .brand-logo{width:176px;height:116px;flex:0 0 176px;object-fit:contain}
+@media(max-width:800px){.site-header{min-height:124px;height:auto}.site-header .brand-logo{width:164px;height:108px;flex-basis:164px}}
