@@ -86,3 +86,13 @@ The Archive basket and quote/order conversion path are implemented. The payment 
 - **Outstanding launch work:** populate products and archive, complete legal/privacy placeholders and retention rules, resolve Supabase Auth leaked-password warning, review 11 multiple-policy and 63 unused-index findings, and run end-to-end acceptance tests.
 
 - Updated private `geranemo-assistant` to v3 so its instructions recognise Designer Studio, distinguish illustrative concepts from production specifications and disclose that its supplied context does not include individual preview images.
+
+ 
+## Addendum — 11 November 2026: Admin design, donations and APK
+- Admin portal now has its own Designer Studio for product concepts. Saving creates an unpublished product draft with AI preview image, SKU, price and stock; owner/admin review and publish remain manual.
+- Public site has Help & Support linking to customer-care and a voluntary Yoco donation form.
+- Added `donations` ledger with RLS; only active owner/admin staff can read donations.
+- Added `donation-checkout` v1 and `yoco-webhook` v6 donation confirmation path.
+- Customer Android build now bundles the public site pages and shared rounded UI styling. Admin Android build includes the admin Designer Studio.
+- GitHub Pages workflow now includes `designer-studio.html`, `designer-studio.js`, and `payment-result.html`.
+- Live Yoco, OpenAI, and physical-device tests remain outstanding.
