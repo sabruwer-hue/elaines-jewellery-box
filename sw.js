@@ -4,5 +4,5 @@ self.addEventListener('notificationclick',event=>{event.notification.close();eve
 self.addEventListener('push',event=>{
  let data={};try{data=event.data?event.data.json():{};}catch{data={body:event.data?.text()||'There is new activity in your shop.'};}
  const title=data.title||'Elaine’s Jewellery Box — Admin activity';
- event.waitUntil(self.registration.showNotification(title,{body:data.body||'There is new activity in your shop.',icon:'/icons/admin-icon.svg',badge:'/icons/admin-icon.svg',tag:data.tag||'ebj-site-activity',data:{url:data.url||'/admin.html'}}));
+ event.waitUntil(self.registration.showNotification(title,{body:data.body||'There is new activity in your shop.',icon:'/elaines-admin-portal-icon.png',badge:'/elaines-admin-portal-icon.png',tag:data.tag||'ebj-site-activity',data:{url:data.url||'/admin.html'}}));
 });
