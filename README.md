@@ -6,14 +6,17 @@ A jewellery-first South African storefront and installable PWA, with a private o
 
 - Public storefront deployed through GitHub Pages at https://elainesjewellerybox.co.za/.
 - Black-and-gold EBJ logo artwork displayed in the public site header and footer; SVG icon used for browser/PWA identity.
-- Responsive storefront, custom-design enquiry, Second Life Studio introduction, customer-care form, review submission and homepage announcement areas.
+- Responsive storefront, public AI Designer Studio, customer-care form, review submission, voluntary Yoco donation checkout and homepage announcement areas.
+- Public help/support action links to the customer-care form; a public telephone number has not been supplied, so this is not yet a staffed phone hotline.
+- Customer Android APK packages the public website pages, shared stylesheet, Designer Studio, Creation Archive, privacy/terms and payment return page as local Capacitor assets. Website changes require a rebuilt APK; they do not update already-installed APKs automatically.
+- Customer controls now use consistent rounded buttons in both the browser and APK webview.
 - Supabase project is active and healthy. Owner/admin access uses Supabase Auth and the active staff roster.
 - Public intake Edge Function is deployed as version 10. Public form submissions use persistent IP-hash rate limiting (8 requests per 10 minutes per observed IP); archive recreation enquiries also have a per-email limit.
 - Private business records, product images and Creation Archive images use separate storage/access policies. The Creation Archive bucket is private and serves eligible public images using expiring signed URLs.
 - Creation Archive supports permanent category-based creation codes, search, category/availability filters, detail views and recreation enquiries. Private/unpublished records and their images are not public.
 - Second Life Studio quotation builder supports itemised costs, scope, assumptions, exclusions, deposits, payment terms, roadmap steps, draft saving and versioned revisions. A customer portal supports accept/decline/request-changes.
 - Invoice workspace supports draft invoices linked to eligible orders or accepted Studio quotes, printing, issue-state recording and payment entries with manual verification.
-- Admin workspace includes product creation/editing, price and stock adjustment, basic category creation, private product-photo upload, order viewing, Studio enquiry review, customer-care case queues, review moderation, homepage announcements, notifications and a Geranemo read/advise/prepare interface. Published product photos are delivered using expiring signed URLs.
+- Admin workspace includes product creation/editing, price and stock adjustment, AI Designer Studio for staff to generate jewellery/furniture/decor concepts and save them as unpublished product drafts with the generated image, Studio enquiry review, customer-care cases, review moderation, announcements, notifications and private Geranemo. Published product photos are delivered using expiring signed URLs.
 - GitHub Pages workflow includes JavaScript syntax checks. Latest verified Pages deployment succeeded (run #148); later repository-only source/documentation commits may trigger another run.
 - Android admin APK workflow has produced debug APK build #38 successfully. The APK download link points to the GitHub releases page.
 
@@ -21,7 +24,7 @@ A jewellery-first South African storefront and installable PWA, with a private o
 
 - No real product catalogue, product photographs, prices or stock have been entered. The homepage now shows an honest empty-catalogue message until real products are entered.
 - No real historical creations have been entered into the Creation Archive yet.
-- Customer cart, checkout, customer accounts, online payment gateway, payment callbacks, refunds and complete fulfilment are not implemented and end-to-end tested.
+- Yoco donation checkout is implemented with a separate donations ledger and signed-webhook confirmation. It remains unverified in a live Yoco sandbox because merchant secrets were not tested. Customer cart, full checkout, refunds and fulfilment are not end-to-end certified.
 - Customer reference-photo upload for Studio requests and the completed-project photo library are incomplete.
 - Automated quote/invoice/customer email delivery is not confirmed. The email provider secrets and verified sender domain must be configured and tested.
 - Full customer correspondence, expense ledger, finance reconciliation, profitability reporting and complete Cosmo BI are outstanding.
