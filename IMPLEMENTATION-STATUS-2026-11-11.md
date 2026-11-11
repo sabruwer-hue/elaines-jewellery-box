@@ -81,3 +81,5 @@ The Archive basket and quote/order conversion path are implemented. The payment 
 - GitHub Pages CI syntax-check passed on the initial Designer Studio implementation commit. Later follow-on commits have their own deployment runs.
 - **Not yet certified:** live AI responses, image-generation availability, manager handover submission, admin preview signing, Yoco sandbox payment, live custom-domain/browser journey.
 - **Outstanding launch work:** populate products and archive, complete legal/privacy placeholders and retention rules, resolve Supabase Auth leaked-password warning, review 11 multiple-policy and 63 unused-index findings, and run end-to-end acceptance tests.
+
+- Updated private `geranemo-assistant` to v3 so its instructions recognise Designer Studio, distinguish illustrative concepts from production specifications and disclose that its supplied context does not include individual preview images.
