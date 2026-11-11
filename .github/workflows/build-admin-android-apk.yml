@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'admin.html'
+      - 'admin-live.js'
       - 'admin.css'
       - 'admin.js'
       - 'admin-live.js'
