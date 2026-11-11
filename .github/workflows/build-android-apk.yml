@@ -35,6 +35,8 @@ jobs:
           cp index.html styles.css app.js manifest.webmanifest sw.js elaines-jewellery-box-logo.png elaines-jewellery-box-icon.png www/
       - name: Generate Android project
         run: npx cap add android
+      - name: Sync Capacitor assets
+        run: npx cap sync android
       - name: Generate native Android launcher icons from Elaine's artwork
         run: |
           python3 -m pip install --user Pillow
@@ -91,8 +93,6 @@ jobs:
           (adaptive / "ic_launcher.xml").write_text(xml, encoding="utf-8")
           (adaptive / "ic_launcher_round.xml").write_text(xml, encoding="utf-8")
           PY
-      - name: Sync Capacitor assets
-        run: npx cap sync android
       - name: Build Android debug APK
         working-directory: android
         run: |
