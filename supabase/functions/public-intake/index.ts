@@ -114,7 +114,7 @@ async function notifyAdmin(eventType: string, title: string, message: string, re
   const email = text(body.email,254).toLowerCase();
   const name = text(body.name,120);
   const requiresCustomerContact = ["studio_enquiry","customer_case","review"].includes(String(body.type));
-  if (requiresCustomerContact && !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email))
+  if (requiresCustomerContact && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
     return json({ error: "Please enter a valid email address." }, 400, origin);
   if (requiresCustomerContact && name.length < 2)
     return json({ error: "Please enter your name." }, 400, origin);
