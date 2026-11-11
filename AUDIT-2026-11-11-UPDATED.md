@@ -16,7 +16,7 @@ All seven functions below were reported ACTIVE at the time of this audit.
 
 | Function | Version | JWT verification | Purpose / status |
 |---|---:|---|---|
-| `geranemo-assistant` | 2 | Required | Private admin assistant; verifies user and active owner/admin staff role |
+| `geranemo-assistant` | 3 | Required | Private admin assistant; verifies user and active owner/admin staff role |
 | `geranemo-public` | 5 | Disabled | Public chat, manager handover, AI design generation and staff-only private-preview signing |
 | `public-intake` | 18 | Disabled | Public forms, studio enquiries and customer-care intake |
 | `studio-quote-portal` | 6 | Disabled | Customer quote view, accept/decline/change response |
@@ -33,7 +33,7 @@ Public functions use server-side validation and service-role access where requir
 - Source verifies the session and requires an active owner/admin staff record.
 - Reads `OPENAI_API_KEY` from Supabase Edge Function Secrets and calls the OpenAI Responses API.
 - Existing operating rules restrict it to read, advise and prepare; it must not publish content, change prices/stock, send customer messages, issue refunds or make financial commitments.
-- The model ID in source is `gpt-6-luna`, which is listed in OpenAI's API model pricing. The key's validity, billing status and successful response were not verified.
+- The model ID in source is `gpt-6-luna`, which is listed in OpenAI's API model pricing. Version 3 also explicitly recognises Designer Studio as an AI-assisted enquiry channel and warns that its supplied context does not include customer design previews. The key's validity, billing status and successful response were not verified.
 
 **Assessment:** Backend code and access controls are present; actual AI response remains unverified.
 
