@@ -112,9 +112,12 @@ async function notifyAdmin(eventType: string, title: string, message: string, re
   if (typeof body.website === "string" && body.website.trim()) return json({ ok: true }, 200, origin);
   const text = (v: unknown, max: number) => typeof v === "string" ? v.trim().slice(0,max) : "";
   const email = text(body.email,254).toLowerCase();
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ error: "Please enter a valid email address." }, 400, origin);
   const name = text(body.name,120);
-  if (name.length < 2) return json({ error: "Please enter your name." }, 400, origin);
+  const requiresCustomerContact = ["studio_enquiry","customer_case","review"].includes(String(body.type));
+  if (requiresCustomerContact && !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email))
+    return json({ error: "Please enter a valid email address." }, 400, origin);
+  if (requiresCustomerContact && name.length < 2)
+    return json({ error: "Please enter your name." }, 400, origin);
 
 
   if (body.type === "subscribe_new_arrivals") {
