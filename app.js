@@ -78,6 +78,17 @@ processNewArrivalUnsubscribe();
   };
   const showHandoff = () => {
     handoffForm.hidden = false;
+    const summaryField = handoffForm.querySelector('textarea[name="message"]');
+    const subjectField = handoffForm.querySelector('input[name="subject"]');
+    const categoryField = handoffForm.querySelector('select[name="category"]');
+    const customerMessages = history.filter(item => item.role === "user").slice(-5).map(item => item.content);
+    if (summaryField && !summaryField.value.trim() && customerMessages.length) {
+      summaryField.value = "Conversation summary from Geranemo:\\n\\n" + customerMessages.join("\\n\\n");
+    }
+    if (subjectField && !subjectField.value.trim()) subjectField.value = "Manager follow-up requested via Geranemo";
+    if (categoryField && customerMessages.some(item => /complain|complaint|problem|issue|unhappy|disappointed/i.test(item))) {
+      categoryField.value = "complaint";
+    }
     handoffForm.scrollIntoView({behavior:"smooth",block:"nearest"});
     handoffForm.querySelector("input")?.focus();
   };
@@ -108,7 +119,7 @@ processNewArrivalUnsubscribe();
       if (!response.ok) throw new Error(result.error || "Geranemo is temporarily unavailable.");
       pending.remove();
       addMessage("assistant", result.reply);
-      if (managerIntent) handoffForm.hidden = false;
+      if (managerIntent) showHandoff();
     } catch (error) {
       pending.remove();
       addMessage("assistant", error.message || "I’m having trouble connecting. Please use the Customer Care section or email Elaine directly.");
