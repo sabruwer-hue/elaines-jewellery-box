@@ -12,10 +12,15 @@
   "orientation": "portrait",
   "icons": [
     {
+      "src": "/elaines-admin-portal-icon.png",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
       "src": "/icons/admin-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }
