@@ -12,4 +12,39 @@
 <section class="section care-section" id="customer-care"><div class="section-heading"><div><p class="eyebrow">Here to help</p><h2>Talk to Elaine</h2></div><p>Questions, suggestions or something we need to put right? Send a private message.</p></div><form class="enquiry-form public-form" id="careForm"><label>Your name<input name="name" required maxlength="120"></label><label>Email address<input name="email" type="email" required maxlength="254"></label><label>How can we help?<select name="category" required><option value="message">General message</option><option value="suggestion">Suggestion</option><option value="complaint">Complaint / concern</option></select></label><label>Subject<input name="subject" required maxlength="180"></label><label>Your message<textarea name="message" rows="5" required minlength="5" maxlength="5000"></textarea></label><label class="honeypot" aria-hidden="true">Leave this field empty<input name="website" tabindex="-1" autocomplete="off"></label><button class="button button-dark" type="submit">Send private message</button><p id="careStatus" class="form-note" role="status">Your message will be saved securely for Elaine to review.</p></form></section>
 <section class="new-arrivals-section" id="new-arrivals"><div class="new-arrivals-inner"><p class="eyebrow">A little note when something lovely arrives</p><h2>Be first to see new arrivals.</h2><p>Join Elaine's new-arrivals list for occasional emails when fresh jewellery and creative pieces are added to the shop.</p><form id="newArrivalForm" class="new-arrivals-form"><label>Your first name <input name="name" maxlength="100" autocomplete="given-name" placeholder="First name (optional)"></label><label>Email address <input name="email" type="email" required maxlength="254" autocomplete="email" placeholder="you@example.com"></label><label class="arrival-consent"><input type="checkbox" name="consent" required><span>Yes, I agree to receive occasional new-arrival emails from Elaine's Jewellery Box. I can unsubscribe at any time.</span></label><label class="honeypot" aria-hidden="true">Leave this field empty<input name="website" tabindex="-1" autocomplete="off"></label><button class="button button-dark" type="submit">Notify me about new arrivals</button><p id="newArrivalStatus" role="status" class="form-note">Only new-arrival updates. No spam, and you can unsubscribe whenever you like.</p></form></div></section><section class="share-section"><div><p class="eyebrow">Good things are better shared</p><h2>Pass a little inspiration along.</h2><p>Share Elaine's Jewellery Box with someone who loves handmade treasures.</p></div><div class="share-actions"><button class="button button-light" id="shareButton">Share this app ↗</button><button class="button button-outline-light" id="copyReferral">Copy my referral link</button><p id="shareStatus" aria-live="polite"></p></div></section>
 <section class="contact-section" id="contact"><div><p class="eyebrow">Let's make something lovely</p><h2>We'd love to hear from you.</h2></div><a class="button button-light" href="mailto:bruweranna2@gmail.com">Email Elaine</a><p class="contact-note">Email: bruweranna2@gmail.com</p></section></main>
+
+<section id="geranemoPanel" class="geranemo-panel" role="dialog" aria-modal="false" aria-labelledby="geranemoTitle" hidden>
+  <header class="geranemo-header">
+    <div><p class="eyebrow">ELAINE’S JEWELLERY BOX</p><h2 id="geranemoTitle">Geranemo</h2><p class="geranemo-subtitle">Your boutique assistant · Manager support</p></div>
+    <button type="button" id="geranemoClose" class="geranemo-close" aria-label="Close Geranemo">×</button>
+  </header>
+  <div id="geranemoMessages" class="geranemo-messages" role="log" aria-live="polite" aria-relevant="additions"></div>
+  <form id="geranemoChatForm" class="geranemo-chat-form">
+    <label class="sr-only" for="geranemoInput">Your message</label>
+    <textarea id="geranemoInput" rows="2" maxlength="2500" required placeholder="Ask me about the shop, a creation or a concern…"></textarea>
+    <button type="submit" class="button button-dark">Send</button>
+  </form>
+  <div class="geranemo-manager-actions">
+    <p>Need a person to look into something?</p>
+    <button type="button" id="geranemoManagerToggle" class="geranemo-manager-button">Speak to the manager</button>
+  </div>
+  <form id="geranemoHandoffForm" class="geranemo-handoff" hidden>
+    <h3>Request a manager follow-up</h3>
+    <p>Your message will be sent securely to Elaine’s team. Geranemo cannot approve refunds or change orders.</p>
+    <label>Your name<input name="name" required maxlength="120" autocomplete="name"></label>
+    <label>Email address<input name="email" type="email" required maxlength="254" autocomplete="email"></label>
+    <label>What is this about?
+      <select name="category" required><option value="complaint">Complaint or concern</option><option value="message">Order or customer-care question</option><option value="suggestion">Suggestion or feedback</option></select>
+    </label>
+    <label>Subject<input name="subject" required maxlength="180" placeholder="A short summary"></label>
+    <label>Tell us what happened<textarea name="message" rows="4" required minlength="5" maxlength="5000" placeholder="Please include any order reference if relevant. Do not include payment or password details."></textarea></label>
+    <button type="submit" class="button button-dark">Send to Elaine’s team</button>
+    <p id="geranemoHandoffStatus" role="status" class="geranemo-status">We’ll give you a reference once your message has been received.</p>
+  </form>
+  <p class="geranemo-disclaimer">Geranemo is an AI assistant. A human team member makes decisions about orders, payments, refunds and complaints.</p>
+</section>
+<button type="button" id="geranemoLauncher" class="geranemo-launcher" aria-controls="geranemoPanel" aria-expanded="false">
+  <span aria-hidden="true">✧</span><span>Ask Geranemo</span>
+</button>
+
 <footer><a class="brand footer-brand" href="#home"><img class="brand-logo" src="/elaines-jewellery-box-logo.png" alt="Elaine’s Jewellery Box logo"></a><p>Handmade with heart. Reimagined with purpose.</p><div class="footer-legal"><a href="/privacy.html">Privacy Policy</a><a href="/terms.html">Terms &amp; Conditions</a><span>© <span id="year"></span> Elaine’s Jewellery Box. All rights reserved.</span><span>Built by <strong>Liquid Digital Art</strong>.</span></div></footer><script src="/app.js" defer></script></body></html>
