@@ -275,3 +275,7 @@ Do not enable live payments until all are true:
 - Mobile and desktop end-to-end checkout tests pass.
 
 **Final recommendation:** Build one connected custom-order lifecycle around the existing database, with POA-first Archive listings and Yoco as the first gateway adapter. Reserve Career Guide as a separate future module using the same documented integration/event architecture. Apply Cosmo's strongest principles—provenance, auditability, workflows, permission boundaries, independent action controls and measurable BI—without importing Cosmo's full complexity into Elaine's website.
+
+
+## Implementation update — 11 November 2026
+The Archive multi-item POA request basket, structured request intake, quote-to-order/invoice conversion, secure Yoco checkout and webhook Edge Function foundations, and Career Guide module registry reservation have now been implemented. See `IMPLEMENTATION-STATUS-2026-11-11.md` for deployed function versions, database safeguards, manual Yoco merchant setup and outstanding release gates. Live payments remain disabled until test credentials and webhook secret are configured and sandbox tests pass.
